@@ -1,6 +1,6 @@
-package com.example.transport.Repository;
+package com.example.transport.repository;
 
-import com.example.transport.Domain.Inspector;
+import com.example.transport.domain.Inspector;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

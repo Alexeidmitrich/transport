@@ -1,12 +1,11 @@
-package com.example.transport.Service;
+package com.example.transport.service;
 
-import com.example.transport.Domain.Tram;
-import com.example.transport.Repository.TramRepo;
+import com.example.transport.domain.Tram;
+import com.example.transport.exception.TransportException;
+import com.example.transport.repository.TramRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -17,10 +16,10 @@ public class TramService {
     public List<Tram> getAllTram(){
         return tramRepo.findAll();
     }
-    public Optional<Tram> getTramById(int id){
-        return tramRepo.findById(id);
+    public Tram getTramById(int id){
+        return tramRepo.findById(id).orElseThrow(()->new TransportException("Transport with id " + id + " was not found"));
     }
-    public void updateTram(Tram tram, int id){
+    public void updateTram(int id,Tram tram ){
         Tram oldTram = tramRepo.getReferenceById(id);
         oldTram.setNumber(tram.getNumber());
         tramRepo.save(oldTram);

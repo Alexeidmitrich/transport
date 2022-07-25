@@ -1,7 +1,8 @@
-package com.example.transport.Service;
+package com.example.transport.service;
 
-import com.example.transport.Domain.Inspector;
-import com.example.transport.Repository.InspectorRepo;
+import com.example.transport.domain.Inspector;
+import com.example.transport.exception.PersonNotFoundException;
+import com.example.transport.repository.InspectorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class InspectorService {
     public List<Inspector> getAllInspector(){
         return inspectorRepo.findAll();
     }
-    private void updateInspector(Inspector inspector, int id){
+    public void updateInspector(int id, Inspector inspector){
         Inspector inspect = inspectorRepo.getReferenceById(id);
         inspect.setFirstname(inspector.getFirstname());
         inspectorRepo.save(inspect);
@@ -24,8 +25,8 @@ public class InspectorService {
     public void addNewInspector(Inspector inspector){
         inspectorRepo.save(inspector);
     }
-    public Optional<Inspector> getInspectorById(int id){
-        return inspectorRepo.findById(id);
+    public Inspector getInspectorById(int id){
+        return inspectorRepo.findById(id).orElseThrow(()->new PersonNotFoundException("Inspector with id " + id + " was not found"));
     }
     public void deleteInspector(int id){
         inspectorRepo.deleteById(id);

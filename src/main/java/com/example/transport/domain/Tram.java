@@ -1,4 +1,4 @@
-package com.example.transport.Domain;
+package com.example.transport.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -6,13 +6,13 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "trolleybuses")
+@Table(name = "trams")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Trolleybus extends Transport{
-    public Trolleybus(int number) {
+public class Tram extends Transport{
+    public Tram(int number) {
         super(number);
     }
 
-    public Trolleybus() {
+    public Tram() {
     }
 }

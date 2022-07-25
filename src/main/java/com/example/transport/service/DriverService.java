@@ -1,26 +1,27 @@
-package com.example.transport.Service;
+package com.example.transport.service;
 
-import com.example.transport.Domain.Driver;
-import com.example.transport.Repository.DriverRepo;
+import com.example.transport.domain.Driver;
+import com.example.transport.exception.PersonNotFoundException;
+import com.example.transport.repository.DriverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class DriverService {
     @Autowired
     private DriverRepo driverRepo;
 
-    List<Driver> getAllDriver(){
+    public List<Driver> getAllDriver(){
        return driverRepo.findAll();
     }
     public void addNewDriver(Driver driver){
         driverRepo.save(driver);
     }
-    public Optional<Driver> getDriverById(int id){
-       return driverRepo.findById(id);
+    public Driver getDriverById(int id){
+       return driverRepo.findById(id).orElseThrow(()->new PersonNotFoundException("Driver wiht id" + id + " was not found"));
     }
     public void updateDiverById(int id, Driver driver){
         Driver drive = driverRepo.getReferenceById(id);

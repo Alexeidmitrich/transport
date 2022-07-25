@@ -1,4 +1,4 @@
-package com.example.transport.Domain;
+package com.example.transport.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;

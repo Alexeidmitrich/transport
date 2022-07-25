@@ -1,6 +1,6 @@
-package com.example.transport.Repository;
+package com.example.transport.repository;
 
-import com.example.transport.Domain.Trolleybus;
+import com.example.transport.domain.Trolleybus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
