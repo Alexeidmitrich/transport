@@ -1,28 +1,32 @@
 package com.example.transport.domain;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Lines {
-    protected int number;
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "lines")
+public class Lines{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_lines")
+    protected int id;
 
-    public Lines(int number) {
-        this.number = number;
+    public Lines(int id) {
+        this.id = id;
     }
-
     public Lines() {
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "numberStop", targetEntity = StopTransport.class)
+    protected List<StopTransport> stopTransport = new ArrayList<>();
+
+    public int getId() {
+        return id;
     }
 
-    public int getNumber() {
-        return number;
+    public void setId(int id) {
+        this.id = id;
     }
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "number_RoutesLong", targetEntity = RoutesLong.class)
-    private List<RoutesLong> routesLongList;
 }

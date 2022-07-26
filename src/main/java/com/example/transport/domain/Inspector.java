@@ -1,9 +1,6 @@
 package com.example.transport.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -11,11 +8,46 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Inspector extends Person{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_inspector")
+    protected int id;
+
+    @ManyToOne
+    @JoinColumn(name = "tram_number_tram")
+    private Tram tram;
+
     public Inspector(String firstname, String lastname, LocalDate date, String phone, String email, String address) {
         super(firstname, lastname, date, phone, email, address);
     }
 
-    public Inspector() {
+    public Inspector(int id) {
+        this.id = id;
+    }
 
+    public Inspector() {
+    }
+
+
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "type_transport", nullable = false)
+    private Transport transport;
+
+
+    public int getId() {
+        return id;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Transport getTransport() {
+        return transport;
+    }
+
+    public void setTransport(Transport transport) {
+        this.transport = transport;
     }
 }
