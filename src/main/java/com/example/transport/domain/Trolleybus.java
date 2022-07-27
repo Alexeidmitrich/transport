@@ -14,7 +14,7 @@ public class Trolleybus extends Transport{
     public Trolleybus() {
     }
     @ManyToOne
-    @JoinColumn(name = "type_transport")
+    @JoinColumn(name = "transport")
     private Transport transport;
     public int getNumber() {
         return number;

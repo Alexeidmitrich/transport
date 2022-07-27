@@ -13,9 +13,9 @@ public class Inspector extends Person{
     @Column(name = "id_inspector")
     protected int id;
 
-    @ManyToOne
-    @JoinColumn(name = "tram_number_tram")
-    private Tram tram;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "type_transport", nullable = false)
+    private Transport transport;
 
     public Inspector(String firstname, String lastname, LocalDate date, String phone, String email, String address) {
         super(firstname, lastname, date, phone, email, address);
@@ -27,11 +27,6 @@ public class Inspector extends Person{
 
     public Inspector() {
     }
-
-
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "type_transport", nullable = false)
-    private Transport transport;
 
 
     public int getId() {

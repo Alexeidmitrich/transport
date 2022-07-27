@@ -13,9 +13,10 @@ public class Driver extends Person{
     @Column(name = "id_driver")
     protected int id;
 
-    @ManyToOne
-    @JoinColumn(name = "tram_number_tram")
-    private Tram tram;
+
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "type_transport", nullable = false)
+    private Transport transport;
 
     public Driver(String firstname, String lastname, LocalDate date, String phone, String email, String address) {
         super(firstname, lastname, date, phone, email, address);
@@ -25,17 +26,6 @@ public class Driver extends Person{
         this.id = id;
     }
     public Driver() {
-    }
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "type_transport", nullable = false)
-    private Transport transport;
-
-    public Tram getTram() {
-        return tram;
-    }
-
-    public void setTram(Tram tram) {
-        this.tram = tram;
     }
 
     public int getId() {

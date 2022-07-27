@@ -15,18 +15,18 @@ public class Tram{
     protected int number;
 
     @ManyToOne
-    @JoinColumn(name = "type_transport")
+    @JoinColumn(name = "transport")
     private Transport transport;
 
     public Tram(int number) {
         this.number = number;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "tram", targetEntity = Driver.class)
+    /*@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "tram", targetEntity = Driver.class)
     private List<Driver> drivers = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "tram", targetEntity = Inspector.class)
-    private List<Inspector> inspectors = new ArrayList<>();
+    private List<Inspector> inspectors = new ArrayList<>();*/
 
     public Transport getTransport() {
         return transport;
