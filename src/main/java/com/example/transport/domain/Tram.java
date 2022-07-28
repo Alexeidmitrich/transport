@@ -11,39 +11,32 @@ import java.util.List;
 public class Tram{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "number_tram", nullable = false)
-    protected int number;
+    @Column(name = "id_tram", nullable = false)
+    protected int id;
 
-    @ManyToOne
-    @JoinColumn(name = "transport")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
     private Transport transport;
 
-    public Tram(int number) {
-        this.number = number;
+    public Tram(int id) {
+        this.id = id;
     }
 
-    /*@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "tram", targetEntity = Driver.class)
-    private List<Driver> drivers = new ArrayList<>();
+    /*@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "id", targetEntity = Driver.class)
+    private List<Driver> drivers = new ArrayList<>();*/
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "tram", targetEntity = Inspector.class)
-    private List<Inspector> inspectors = new ArrayList<>();*/
+    /*@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "", targetEntity = Tram.class)
+    private List<Tram> trams = new ArrayList<>();*/
 
-    public Transport getTransport() {
-        return transport;
-    }
-
-    public void setTransport(Transport transport) {
-        this.transport = transport;
-    }
 
     public Tram() {
     }
 
-    public int getNumber() {
-        return number;
+    public int getId() {
+        return id;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setId(int id) {
+        this.id = id;
     }
 }

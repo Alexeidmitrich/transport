@@ -1,9 +1,6 @@
 package com.example.transport.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -18,4 +15,7 @@ public class Inspector extends Person{
     public Inspector() {
 
     }
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "type")
+    private Transport transport;
 }

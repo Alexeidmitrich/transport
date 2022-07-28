@@ -21,7 +21,7 @@ public class TramService {
     }
     public void updateTram(int id,Tram tram ){
         Tram oldTram = tramRepo.getReferenceById(id);
-        oldTram.setNumber(tram.getNumber());
+        oldTram.setId(tram.getId());
         tramRepo.save(oldTram);
     }
     public void addNewTram(Tram tram){

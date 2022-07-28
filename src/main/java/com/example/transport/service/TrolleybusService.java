@@ -20,7 +20,7 @@ public class TrolleybusService {
     }
     public void updateTrolleybus(int id, Trolleybus trolleybus){
         Trolleybus oldTrolleybus = trolleybusRepo.getReferenceById(id);
-        oldTrolleybus.setNumber(trolleybus.getNumber());
+        oldTrolleybus.setId(trolleybus.getId());
         trolleybusRepo.save(oldTrolleybus);
     }
     public void addNewTrolleybus(Trolleybus trolleybus){
