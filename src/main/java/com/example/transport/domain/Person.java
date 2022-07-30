@@ -4,25 +4,26 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name = "person")
-public abstract class Person {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "employee",discriminatorType = DiscriminatorType.INTEGER)
+//@Table(name = "person")
+public class Person {
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    @Column(name = "id")
-   protected int id;
+   private int id;
    @Column(nullable = false, length = 55)
-   protected String firstname;
+   private String firstname;
    @Column(nullable = false,length = 55)
-   protected String lastname;
+   private String lastname;
    @Column(nullable = false,length = 8)
-   protected LocalDate date;
+   private LocalDate date;
    @Column(nullable = false,length = 16)
-   protected String phone;
+   private String phone;
    @Column(nullable = false, length = 55)
-   protected String email;
+   private String email;
    @Column(nullable = false, length = 100)
-   protected String address;
+   private String address;
 
     public Person(int id, String firstname, String lastname, LocalDate date, String phone, String email, String address) {
         this.id = id;

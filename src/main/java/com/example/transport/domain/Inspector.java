@@ -4,8 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "inspectors")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorValue("2")
 public class Inspector extends Person{
 
     public Inspector(String firstname, String lastname, LocalDate date, String phone, String email, String address) {

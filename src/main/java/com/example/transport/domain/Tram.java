@@ -6,21 +6,16 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "trams")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Tram{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_tram", nullable = false)
-    protected int id;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
-    private Transport transport;
-
-    public Tram(int id) {
-        this.id = id;
+@DiscriminatorValue("1")
+public class Tram extends Transport{
+    public Tram(int id, String type) {
+        super(id, type);
     }
+
+    /*@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private Transport transport;*/
+
 
     /*@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "id", targetEntity = Driver.class)
     private List<Driver> drivers = new ArrayList<>();*/
@@ -30,13 +25,5 @@ public class Tram{
 
 
     public Tram() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

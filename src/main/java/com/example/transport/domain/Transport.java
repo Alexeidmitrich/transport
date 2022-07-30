@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name = "transport")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "transport", discriminatorType = DiscriminatorType.INTEGER)
 public class Transport {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

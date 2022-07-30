@@ -1,6 +1,7 @@
 package com.example.transport.domain;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -10,7 +11,9 @@ public class Lines {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false,name = "id_lines")
-    protected int number;
+    private int number;
+
+    private LocalTime timeArrive;
 
     public Lines(int number) {
         this.number = number;
