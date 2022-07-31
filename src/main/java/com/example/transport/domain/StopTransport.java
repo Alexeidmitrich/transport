@@ -19,9 +19,9 @@ public class StopTransport {
     @Column(name = "access", nullable = false)
     private String access;
 
-    /*@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "number")
-    private Lines lines;*/
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_lines")
+    private Line line;
 
     public StopTransport(int id, String name, LocalTime time, String access) {
         this.id = id;
