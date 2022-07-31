@@ -2,6 +2,7 @@ package com.example.transport.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("1")
@@ -12,8 +13,8 @@ public class Driver extends Person {
 
     public Driver() {
     }
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "type")
-    private Transport transport;
+    @ManyToMany
+    @JoinColumn(name = "id")
+    private Set<Transport> transports;
 }
+

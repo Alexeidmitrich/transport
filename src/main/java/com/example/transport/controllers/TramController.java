@@ -13,7 +13,7 @@ public class TramController {
     private TramService tramService;
 
     @GetMapping("/trams")
-    public List<Tram> getTram(){
+    public List<Tram> getAllTram(){
         return tramService.getAllTram();
     }
     @PostMapping("/trams")

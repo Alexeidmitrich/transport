@@ -1,7 +1,9 @@
 package com.example.transport.domain;
 
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("2")
@@ -14,7 +16,7 @@ public class Inspector extends Person{
     public Inspector() {
 
     }
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "type")
-    private Transport transport;
+    @ManyToMany
+    @JoinColumn(name = "id")
+    private Set<Transport> transports;
 }
