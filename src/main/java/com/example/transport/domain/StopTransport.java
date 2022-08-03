@@ -2,6 +2,7 @@ package com.example.transport.domain;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -13,9 +14,6 @@ public class StopTransport {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "time", nullable = false)
-    private LocalTime time;
-
     @Column(name = "access", nullable = false)
     private String access;
 
@@ -23,12 +21,12 @@ public class StopTransport {
     @JoinColumn(name = "id_lines")
     private Line line;
 
-    public StopTransport(int id, String name, LocalTime time, String access) {
+    public StopTransport(int id, String name, String access) {
         this.id = id;
         this.name = name;
-        this.time = time;
         this.access = access;
     }
+
 
     public StopTransport() {
 
@@ -50,13 +48,6 @@ public class StopTransport {
         this.name = name;
     }
 
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
 
     public String getAccess() {
         return access;

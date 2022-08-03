@@ -30,4 +30,9 @@ public class StopTransportController {
         stopTransportService.updateStopTransport(id, stopTransport);
         return "Ok";
     }
+    @DeleteMapping("/stoptransport/{id}")
+    public String deleteStopTransport(int id){
+        stopTransportService.deleteStopTransport(id);
+        return "Ok";
+    }
 }

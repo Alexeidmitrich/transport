@@ -3,6 +3,7 @@ package com.example.transport.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -11,6 +12,7 @@ public class Tram extends Transport{
     public Tram(int id) {
         super(id);
     }
+
 
     public Tram() {
     }

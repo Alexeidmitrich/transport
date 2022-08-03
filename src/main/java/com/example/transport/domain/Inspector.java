@@ -16,6 +16,7 @@ public class Inspector extends Person{
     @ManyToMany
     @JoinColumn(name = "id")
     private Set<Transport> transports;
+
     public Inspector() {
 
     }

@@ -3,6 +3,7 @@ package com.example.transport.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -21,6 +22,7 @@ public class Line {
     }
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "line", targetEntity = StopTransport.class)
     private List<StopTransport> stopTransports = new ArrayList<>();
+
 
     public void setNumber(int number) {
         this.number = number;
