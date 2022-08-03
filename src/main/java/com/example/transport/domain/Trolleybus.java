@@ -1,9 +1,6 @@
 package com.example.transport.domain;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @DiscriminatorValue("trolleybus")
@@ -11,8 +8,6 @@ public class Trolleybus extends Transport{
     public Trolleybus(int id) {
             super(id);
     }
-
-
     public Trolleybus() {
     }
 

@@ -17,20 +17,18 @@ public class StopTransport {
     @Column(name = "access", nullable = false)
     private String access;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_lines")
-    private Line line;
-
     public StopTransport(int id, String name, String access) {
         this.id = id;
         this.name = name;
         this.access = access;
     }
 
-
     public StopTransport() {
-
     }
+
+    @ManyToMany
+    @JoinColumn(name = "id_lines")
+    private Set<Line> lines;
 
     public int getId() {
         return id;
@@ -47,7 +45,6 @@ public class StopTransport {
     public void setName(String name) {
         this.name = name;
     }
-
 
     public String getAccess() {
         return access;

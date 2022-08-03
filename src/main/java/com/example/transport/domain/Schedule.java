@@ -20,6 +20,9 @@ public class Schedule {
         this.timeArrival = timeArrival;
         this.timeDeparture = timeDeparture;
     }
+    public Schedule() {
+    }
+
     @ManyToMany
     @JoinColumn(name = "id")
     private Set<StopTransport> stopTransports;
@@ -43,9 +46,6 @@ public class Schedule {
     @ManyToMany
     @JoinColumn(name = "id_inspectors")
     private Set<Inspector> inspectors;
-
-    public Schedule() {
-    }
 
     public LocalTime getTimeArrival() {
         return timeArrival;

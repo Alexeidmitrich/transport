@@ -11,12 +11,11 @@ public class Driver  extends Person{
     public Driver(String firstname, String lastname, LocalDate date, String phone, String email, String address) {
         super(firstname, lastname, date, phone, email, address);
     }
-    @ManyToMany
-    @JoinColumn(name = "id")
-    private Set<Transport> transports;
-
 
     public Driver() {
     }
+    @ManyToMany
+    @JoinColumn(name = "id")
+    private Set<Transport> transports;
 }
 

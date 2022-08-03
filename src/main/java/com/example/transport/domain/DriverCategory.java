@@ -13,6 +13,14 @@ public class DriverCategory {
 
     private String category;
 
+    public DriverCategory(Long id, String category) {
+        this.id = id;
+        this.category = category;
+    }
+
+    public DriverCategory() {
+    }
+
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id", nullable = false)
     private Set<Driver> drivers;
@@ -24,8 +32,4 @@ public class DriverCategory {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public DriverCategory() {
-    }
-
 }

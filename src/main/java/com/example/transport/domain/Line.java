@@ -20,9 +20,6 @@ public class Line {
 
     public Line() {
     }
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy = "line", targetEntity = StopTransport.class)
-    private List<StopTransport> stopTransports = new ArrayList<>();
-
 
     public void setNumber(int number) {
         this.number = number;
