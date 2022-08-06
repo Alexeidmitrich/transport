@@ -24,10 +24,17 @@ public class ScheduleService {
     }
     public void updateSchedule(int id, Schedule schedule){
         Schedule oldSchedule = scheduleRepo.getReferenceById(id);
-        oldSchedule.setId(schedule.getId());
+        //oldSchedule.setId(schedule.getId());
         scheduleRepo.save(oldSchedule);
     }
     public void deleteSchedule(int id){
         scheduleRepo.deleteById(id);
     }
+
+
+    public void uploadService() {
+
+
+    }
 }
+

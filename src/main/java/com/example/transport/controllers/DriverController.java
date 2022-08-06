@@ -2,6 +2,7 @@ package com.example.transport.controllers;
 
 import com.example.transport.domain.Driver;
 import com.example.transport.service.DriverService;
+import com.example.transport.shedule.ExcellReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class DriverController {
     @Autowired
     private DriverService driverService;
+    private ExcellReader excellReader;
 
     @GetMapping("/drivers")
     public List<Driver> getDrivers(){
