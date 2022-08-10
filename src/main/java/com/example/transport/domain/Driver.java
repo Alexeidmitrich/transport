@@ -1,5 +1,7 @@
 package com.example.transport.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
@@ -7,10 +9,8 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "drivers")
+@Data
 public class Driver  extends Person{
-    public Driver(String firstname, String lastname, LocalDate date, String phone, String email, String address) {
-        super(firstname, lastname, date, phone, email, address);
-    }
 
     public Driver() {
     }

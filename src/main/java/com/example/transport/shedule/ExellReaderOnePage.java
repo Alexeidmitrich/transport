@@ -5,24 +5,28 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.*;
 import java.util.Iterator;
 
+
 import java.io.FileInputStream;
 
 public class ExellReaderOnePage {
-    public static void main(String[] args) throws Exception {
+    /*
+     public static void main(String[] args) throws Exception {
         try {
             FileInputStream excelFile = new FileInputStream("C:\\Users\\alexe\\Downloads\\Timetable.xls");
             Workbook wb = new HSSFWorkbook(excelFile);
-            Sheet datatypeSheet = wb.getSheetAt(1);
-            Iterator<Row> iterator = datatypeSheet.iterator();
+            Sheet sheet = wb.getSheetAt(3);
+            Iterator<Row> iterator = sheet.iterator();
             while (iterator.hasNext()) {
                 Row currentRow = iterator.next();
                 Iterator<Cell> cellIterator = currentRow.iterator();
+                Journey journey = ......
                 while (cellIterator.hasNext()) {
                     Cell currentCell = cellIterator.next();
                     if (currentCell.getCellTypeEnum() == CellType.STRING) {
-                        System.out.print(currentCell.getStringCellValue() + "--");
+                            System.out.print(currentCell.getStringCellValue() + "--");
                     } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
                         System.out.print(currentCell.getNumericCellValue() + "--");
+                        journey.setBlabla()
                     }
                 }
                 System.out.println();
@@ -33,4 +37,6 @@ public class ExellReaderOnePage {
             e.printStackTrace();
         }
     }
+
+     */
 }

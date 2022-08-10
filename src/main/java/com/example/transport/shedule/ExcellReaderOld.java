@@ -4,20 +4,17 @@ import java.io.*;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-public class ExcellReader {
+public class ExcellReaderOld {
     public static void main(String[] args) throws Exception {
         File f = new File("C:\\Users\\alexe\\Downloads\\Timetable.xls");
         try {
             Workbook wb=Workbook.getWorkbook(f);
             int Num = wb.getNumberOfSheets();
-
             for (int i = 0; i < Num; i++) {
                 Sheet sheet = wb.getSheet(i);
                 Sheet s = wb.getSheet(i);
-
                 int row = s.getRows();
                 int col = s.getColumns();
-
                 for(int i1=0; i1<row;i1++) {
                     for(int j=0;j<col;j++) {
                         Cell c =s.getCell(j, i1);

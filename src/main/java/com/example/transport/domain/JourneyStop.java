@@ -31,8 +31,6 @@ public class JourneyStop {
     @ManyToOne
     @JoinColumn(name = "transport_id")
     private Transport transport;
-
-
     @ManyToOne
     @JoinColumn(name = "journey_id_lines")
     private Journey journey;
