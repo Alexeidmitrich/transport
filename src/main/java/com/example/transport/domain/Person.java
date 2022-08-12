@@ -6,11 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 //@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@DiscriminatorColumn(name = "employee",discriminatorType = DiscriminatorType.STRING)
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,21 +20,21 @@ public class Person {
    @GeneratedValue(strategy = GenerationType.AUTO)
    @Column(nullable = false)
    @ExcelColumn(name = "Номер")
-   private String id;
+   protected String id;
    @Column(nullable = false, length = 55)
    @ExcelColumn(name = "ФИО")
-   private String firstname;
+   protected String firstname;
    //@Column(nullable = false,length = 55)
    //private String lastname;
-   @Column(nullable = false,length = 8)
+   @Column(nullable = false, length = 8)
    @ExcelColumn(name = "Дата рождения")
-   private String date;
+   protected String date;
    @Column(nullable = false, length = 100)
    @ExcelColumn(name = "Адрес")
-   private String address;
-   @Column(nullable = false,length = 16)
+   protected String address;
+   @Column(nullable = false, length = 16)
    @ExcelColumn(name = "Телефон")
-   private String phone;
+   protected String phone;
    @Column(nullable = false, length = 55)
    @ExcelColumn(name = "email")
    private String email;
