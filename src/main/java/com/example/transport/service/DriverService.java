@@ -25,7 +25,7 @@ public class DriverService {
     }
     public void updateDiverById(int id, Driver driver){
         Driver drive = driverRepo.getReferenceById(id);
-        drive.setFirstname(driver.getFirstname());
+        drive.setFIO(driver.getFIO());
         driverRepo.save(drive);
     }
     public void deleteDriver(int id){

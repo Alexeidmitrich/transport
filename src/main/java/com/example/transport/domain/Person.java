@@ -9,8 +9,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "employee",discriminatorType = DiscriminatorType.STRING)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,9 +21,7 @@ public class Person {
    private String id;
    @Column(nullable = false, length = 55)
    @ExcelColumn(name = "ФИО")
-   private String firstname;
-   //@Column(nullable = false,length = 55)
-   //private String lastname;
+   private String FIO;
    @Column(nullable = false,length = 8)
    @ExcelColumn(name = "Дата рождения")
    private String date;
@@ -46,4 +42,17 @@ public class Person {
    private String access;
 
 
+   @Override
+   public String toString() {
+      return "Person{" +
+              "id='" + id + '\'' +
+              ", FIO='" + FIO + '\'' +
+              ", date='" + date + '\'' +
+              ", address='" + address + '\'' +
+              ", phone='" + phone + '\'' +
+              ", email='" + email + '\'' +
+              ", title='" + title + '\'' +
+              ", access='" + access + '\'' +
+              '}';
+   }
 }

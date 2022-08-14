@@ -23,7 +23,7 @@ public class DriverCategory {
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id", nullable = false)
-    private Set<Driver> drivers;
+    private Set<Person> drivers;
 
     public Long getId() {
         return id;

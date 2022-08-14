@@ -19,7 +19,7 @@ public class InspectorService {
     }
     public void updateInspector(int id, Inspector inspector){
         Inspector inspect = inspectorRepo.getReferenceById(id);
-        inspect.setFirstname(inspector.getFirstname());
+        inspect.setFIO(inspector.getFIO());
         inspectorRepo.save(inspect);
     }
     public void addNewInspector(Inspector inspector){
