@@ -2,8 +2,10 @@ package com.example.transport.shedule;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellUtil;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
-import java.lang.reflect.*;
 
 public class PoiPOJOUtils {
 
@@ -57,12 +59,17 @@ public class PoiPOJOUtils {
                 }
 
                 // fill the bean
-                for (Field f : beanClass.getDeclaredFields()) {
+                List<Field> ownFiled = Arrays.stream(beanClass.getDeclaredFields()).toList();
+                List<Field> superClassFields = Arrays.stream(beanClass.getSuperclass().getDeclaredFields()).toList();
+                List<Field> fields = new ArrayList<>();
+                fields.addAll(ownFiled);
+                fields.addAll(superClassFields);
+                for (Field f : fields) {
                     if (!f.isAnnotationPresent(ExcelColumn.class)) {
                         continue;
                     }
                     ExcelColumn ec = f.getAnnotation(ExcelColumn.class);
-                    if(entry.getValue().equals(ec.name())) {
+                    if (entry.getValue().equals(ec.name())) {
                         f.setAccessible(true);
                         if (f.getType() == String.class) {
                             f.set(bean, cellValue);
@@ -81,7 +88,6 @@ public class PoiPOJOUtils {
             }
             result.add(bean);
         }
-
         return result;
 
     }

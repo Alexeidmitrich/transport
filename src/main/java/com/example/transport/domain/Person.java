@@ -21,16 +21,18 @@ public class Person {
    private String id;
    @Column(nullable = false, length = 55)
    @ExcelColumn(name = "ФИО")
-   private String FIO;
-   @Column(nullable = false,length = 8)
+   protected String firstname;
+   //@Column(nullable = false,length = 55)
+   //private String lastname;
+   @Column(nullable = false, length = 8)
    @ExcelColumn(name = "Дата рождения")
-   private String date;
+   protected String date;
    @Column(nullable = false, length = 100)
    @ExcelColumn(name = "Адрес")
-   private String address;
-   @Column(nullable = false,length = 16)
+   protected String address;
+   @Column(nullable = false, length = 16)
    @ExcelColumn(name = "Телефон")
-   private String phone;
+   protected String phone;
    @Column(nullable = false, length = 55)
    @ExcelColumn(name = "email")
    private String email;
@@ -46,7 +48,7 @@ public class Person {
    public String toString() {
       return "Person{" +
               "id='" + id + '\'' +
-              ", FIO='" + FIO + '\'' +
+              ", firstnamme='" + firstname + '\'' +
               ", date='" + date + '\'' +
               ", address='" + address + '\'' +
               ", phone='" + phone + '\'' +
