@@ -23,12 +23,6 @@ public class JourneyStop {
     @JoinColumn(name = "stop_transport_id")
     private StopTransport stopTransport;
     @ManyToOne
-    @JoinColumn(name = "driver_id")
-    private Driver driver;
-    @ManyToOne
-    @JoinColumn(name = "inspector_id")
-    private Inspector inspector;
-    @ManyToOne
     @JoinColumn(name = "transport_id")
     private Transport transport;
     @ManyToOne

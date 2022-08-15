@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
 public class Schedule {
 
 
