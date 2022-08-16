@@ -1,5 +1,10 @@
 package com.example.transport.domain;
 
+import com.example.transport.shedule.ExcelColumn;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.Set;
@@ -7,50 +12,27 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "stoptransport")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StopTransport {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @ExcelColumn(name="Номер")
+    private String id;
+    @ExcelColumn(name = "Название")
     @Column(name = "name", nullable = false)
     private String name;
+    @ExcelColumn(name = "Троллейбус")
+    @Column(name = "trolleybus", nullable = false)
+    private String trolleybus;
+    @ExcelColumn(name = "Трамвай")
+    @Column(name = "tram", nullable = false)
+    private String tram;
 
-    @Column(name = "access", nullable = false)
-    private String access;
-
-    public StopTransport(int id, String name, String access) {
-        this.id = id;
-        this.name = name;
-        this.access = access;
-    }
-
-    public StopTransport() {
-    }
 
     @ManyToMany
     @JoinColumn(name = "id_lines")
     private Set<Line> lines;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAccess() {
-        return access;
-    }
-
-    public void setAccess(String access) {
-        this.access = access;
-    }
 }

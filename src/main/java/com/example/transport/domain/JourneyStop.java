@@ -1,5 +1,6 @@
 package com.example.transport.domain;
 
+import com.example.transport.shedule.ExcelColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,10 @@ public class JourneyStop {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable=false, name = "id_journey_stop")
     private int id;
-    private LocalTime arrivalTime;
+    @ExcelColumn(name = "Линия")
+    private String name;
+    @ExcelColumn(name = "Время" )
+    private String arrivalTime;
     private LocalTime departureTime;
     @ManyToOne
     @JoinColumn(name = "stop_transport_id")

@@ -1,15 +1,21 @@
 package com.example.transport.domain;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Data
 public class Journey {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable=false, name = "id_lines")
-    private int id;//// See excel example 1012, 1014 ...............
+    private String number;
+    private String numberForPassengers;
+    private List<JourneyStop> journeyStops = new ArrayList<>();
+    private String data;
 
+
+    public void addJourneyStop(JourneyStop stop){
+        journeyStops.add(stop);
+    }
 }

@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Deprecated
+
+
 public class ExelReaderEmployee {
 
     private final Workbook wb;
@@ -27,6 +30,8 @@ public class ExelReaderEmployee {
              throw new RuntimeException(e);
          }
      }
+
+
      public Map<String, Person> getEmployee() throws Exception {
          Sheet sheet = wb.getSheetAt(2);
          List<Person> personList = PoiPOJOUtils.sheetToPOJO(sheet, Person.class)
