@@ -25,7 +25,7 @@ public class JourneyStopService {
     }
     public void updateJourneyStop(int id, JourneyStop journeyStop){
         JourneyStop oldJourneyStop = journeyStopRepo.getReferenceById(id);
-        oldJourneyStop.setId(journeyStop.getId());
+       // oldJourneyStop.setId(journeyStop.getId());
         journeyStopRepo.save(oldJourneyStop);
     }
     public void deleteJourneyStop(int id){

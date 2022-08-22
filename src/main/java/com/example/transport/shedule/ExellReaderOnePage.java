@@ -9,9 +9,9 @@ import java.util.Iterator;
 import java.io.FileInputStream;
 
 public class ExellReaderOnePage {
-    /*
+
      public static void main(String[] args) throws Exception {
-        try {
+       /* try {
             FileInputStream excelFile = new FileInputStream("C:\\Users\\alexe\\Downloads\\Timetable.xls");
             Workbook wb = new HSSFWorkbook(excelFile);
             Sheet sheet = wb.getSheetAt(3);
@@ -19,14 +19,12 @@ public class ExellReaderOnePage {
             while (iterator.hasNext()) {
                 Row currentRow = iterator.next();
                 Iterator<Cell> cellIterator = currentRow.iterator();
-                Journey journey = ......
                 while (cellIterator.hasNext()) {
                     Cell currentCell = cellIterator.next();
                     if (currentCell.getCellTypeEnum() == CellType.STRING) {
                             System.out.print(currentCell.getStringCellValue() + "--");
                     } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
                         System.out.print(currentCell.getNumericCellValue() + "--");
-                        journey.setBlabla()
                     }
                 }
                 System.out.println();
@@ -35,8 +33,6 @@ public class ExellReaderOnePage {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
-
-     */
 }

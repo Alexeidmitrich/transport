@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+
 
 @Entity
 @Data
@@ -22,8 +22,6 @@ public class Person {
    @Column(nullable = false, length = 55)
    @ExcelColumn(name = "ФИО")
    protected String firstname;
-   //@Column(nullable = false,length = 55)
-   //private String lastname;
    @Column(nullable = false, length = 8)
    @ExcelColumn(name = "Дата рождения")
    protected String date;

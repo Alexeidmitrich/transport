@@ -17,7 +17,7 @@ public class Transport {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    @ExcelColumn(name = "Инвентарный номер")
+    @ExcelColumn(name = "Номер")
     protected String id;
 
 
