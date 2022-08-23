@@ -7,9 +7,7 @@ import org.apache.poi.ss.util.CellReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Driver;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -129,37 +127,32 @@ public class ExcelReader {
             if(journeyInfo.split("\\s+").length > 1){
                 journey.setNumber(journeyInfo.split("\\s+")[1]);
             }
-            while (true){
+            while (true) {
                 Row beginRow = sheet.getRow(region.getFirstRow() + offset);
 
                 if (beginRow == null) {
                     break;
                 }
                 Cell cellNumber = beginRow.getCell(regions.get(0).getFirstRow() + 1);
-                if (cellNumber == null){
+                if (cellNumber == null) {
                     break;
                 }
                 JourneyStop journeyStop = new JourneyStop();
                 journey.setNumberForPassengers(String.valueOf(cellNumber.getNumericCellValue()));
                 Cell transportCell = beginRow.getCell(region.getFirstColumn());
-                if (transportCell.getCellType().equals(CellType.FORMULA)){
+                if (transportCell.getCellType().equals(CellType.FORMULA)) {
                     FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
                     CellReference cellReference = new CellReference(transportCell);
                     Row rowTransport = sheet.getRow(cellReference.getRow());
                     Cell cellTransport = rowTransport.getCell(cellReference.getCol());
                     CellValue idTransport = evaluator.evaluate(cellTransport);
-                    String idTransportStr = String.valueOf((int)idTransport.getNumberValue());
+                    String idTransportStr = String.valueOf((int) idTransport.getNumberValue());
                     Transport transport = transportMap.get(idTransportStr);
-                    System.out.println();
                     journeyStop.setTransport(transport);
                 }
-                Cell cellTime = beginRow.getCell(region.getFirstColumn()+1);
-                if (cellTime == null){
-                    break;
-                }
 
-                Cell Personcell = beginRow.getCell(regions.get(0).getFirstRow()+4);
-                if(Personcell.getCellType().equals(CellType.FORMULA)){
+                Cell Personcell = beginRow.getCell(regions.get(0).getFirstRow() + 4);
+                if (Personcell.getCellType().equals(CellType.FORMULA)) {
                     FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
                     CellReference cellReference = new CellReference(Personcell);
                     Row rowPerson = sheet.getRow(cellReference.getRow());
@@ -170,8 +163,8 @@ public class ExcelReader {
                     journeyStop.setDriver(person);
                 }
 
-                Cell inspectorcell = beginRow.getCell(region.getFirstColumn()+3);
-                if(inspectorcell.getCellType().equals(CellType.FORMULA)){
+                Cell inspectorcell = beginRow.getCell(region.getFirstColumn() + 3);
+                if (inspectorcell.getCellType().equals(CellType.FORMULA)) {
                     FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
                     CellReference cellReference = new CellReference(inspectorcell);
                     Row rowInspector = sheet.getRow(cellReference.getRow());
@@ -181,10 +174,16 @@ public class ExcelReader {
                     Person person = per.get(idInspectorStr);
                     journeyStop.setInspector(person);
                 }
-                journey.addJourneyStop(journeyStop);
+                Cell cellTime = beginRow.getCell(regions.get(0).getFirstRow() + 3);
+                if (cellTime == null) {
+                    break;
+               } else {
+                    journeyStop.setTime(String.valueOf(cellTime.getLocalDateTimeCellValue()));
+                }
+                    System.out.println();
+                    journey.addJourneyStop(journeyStop);
+                }
             }
-
-        }
         return journeys;
     }
     public static void main(String[] args) {

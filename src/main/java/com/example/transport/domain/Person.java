@@ -21,7 +21,7 @@ public class Person {
    private String id;
    @Column(nullable = false, length = 55)
    @ExcelColumn(name = "ФИО")
-   protected String firstname;
+   protected String fio;
    @Column(nullable = false, length = 8)
    @ExcelColumn(name = "Дата рождения")
    protected String date;
@@ -46,7 +46,7 @@ public class Person {
    public String toString() {
       return "Person{" +
               "id='" + id + '\'' +
-              ", firstnamme='" + firstname + '\'' +
+              ", fio='" + fio + '\'' +
               ", date='" + date + '\'' +
               ", address='" + address + '\'' +
               ", phone='" + phone + '\'' +
