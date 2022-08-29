@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalTime;
 
 
 @Data
@@ -21,7 +22,7 @@ public class JourneyStop {
     private StopTransport stop;
     private Person driver;
     private Person inspector;
-    private String time;
+    private LocalTime time;
 
 
 }

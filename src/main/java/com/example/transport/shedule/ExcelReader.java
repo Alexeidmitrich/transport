@@ -7,6 +7,7 @@ import org.apache.poi.ss.util.CellReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,11 +20,11 @@ import java.util.stream.Collectors;
 
 public class ExcelReader {
 
-
     private final Workbook wb;
     private static final int FIRST_ROW_WITH_DATE = 2;
     private static final int STEP_JOURNEY_BLOCK = 4;
     private static final int FIRST_JOURNEY_SHEET = 4;
+
     public ExcelReader(String fileName) {
         try {
             File fis = new File(fileName);
@@ -32,15 +33,16 @@ public class ExcelReader {
             throw new RuntimeException(e);
         }
     }
-    public  Map<String, Transport> getTrolleybus() throws  Exception{
-          Sheet sheet = wb.getSheetAt(0);
-          List<Transport> trolleybuses = PoiPOJOUtils.sheetToPOJO(sheet, Transport.class)
-                  .stream().filter(transport -> !transport.getId().isEmpty()).collect(Collectors.toList());
-          Map<String, Transport> trolleybus = trolleybuses
-                    .stream()
-                    .collect(Collectors.toMap(Transport::getId, Function.identity()));
-          System.out.println(trolleybus);
-         return trolleybus;
+
+    public Map<String, Transport> getTrolleybus() throws Exception {
+        Sheet sheet = wb.getSheetAt(0);
+        List<Transport> trolleybuses = PoiPOJOUtils.sheetToPOJO(sheet, Transport.class)
+                .stream().filter(transport -> !transport.getId().isEmpty()).collect(Collectors.toList());
+        Map<String, Transport> trolleybus = trolleybuses
+                .stream()
+                .collect(Collectors.toMap(Transport::getId, Function.identity()));
+        System.out.println(trolleybus);
+        return trolleybus;
     }
 
 
@@ -53,108 +55,45 @@ public class ExcelReader {
         System.out.println(personList);
         return personMap;
     }
-    public Map<String , StopTransport> getStops() throws Exception {
+
+    public Map<String, StopTransport> getStops() throws Exception {
         Sheet sheet = wb.getSheetAt(3);
         List<StopTransport> stopTransportList = PoiPOJOUtils.sheetToPOJO(sheet, StopTransport.class);
         Map<String, StopTransport> stopTransporMap = stopTransportList
                 .stream()
-                        .collect(Collectors.toMap(StopTransport::getId, Function.identity()));
+                .collect(Collectors.toMap(StopTransport::getId, Function.identity()));
         System.out.println(stopTransportList);
         return stopTransporMap;
     }
-    public String getDate(String sheetName) throws Exception{
-        Pattern r = Pattern.compile("(.*\\s[0-9]+-[0-9]+)\\s+([0-9]+\\s[a-zA-Zа-яА-Я ]+\\s[0-9]+)");
-        Matcher m = r.matcher(sheetName);
-        String date = "";
-        if (m.find( )) {
-            date = m.group(2);
-            return date;
-        }
 
-        return null;// regions;
-    }
+    public String getDate(Sheet sheet,String sheetName) throws Exception {
 
-
-    public List<List<Journey>> getJourney() throws Exception {
-        List<List<Journey>> listJourneyOther = new LinkedList<>();
-        for (int i = FIRST_JOURNEY_SHEET; i < wb.getNumberOfSheets() ; i++) {
-            listJourneyOther.add(getJourney(i));
-        }
-        return listJourneyOther;
-    }
-
-    public List<Journey> getJourney(int sheetNumber) throws Exception {
-        Sheet sheet = wb.getSheetAt(sheetNumber);
-        Map<String, StopTransport> stops = getStops();
-        List<Journey> journeys = new ArrayList<>();
-        Map<String, Person> per = getEmployee();
-        Map<String, Transport> transportMap = getTrolleybus();
-       // List<StopTransport> journeyStops = getStopTransport(sheet, stops);
-        //System.out.println(cellValue);
         List<CellRangeAddress> regions = sheet.getMergedRegions();
-        String date = getDate(sheet.getSheetName());
+        String type = sheet.getRow(regions.get(0).getFirstRow()).getCell(0).getStringCellValue();
+        Pattern r = Pattern.compile("(.*\\s[0-9]+-[0-9]+)\\s+([0-9]+\\s[a-zA-Zа-яА-Я ]+\\s[0-9]+)");
+        Matcher m = r.matcher(type);
+        String date = "";
+        if (m.find()) {
+            date = m.group(2);
+            //return date;
+        }
+        return date;
+    }
+    public Map<String, Person> getPerson(int sheetNumber) throws Exception {
+        Map<String, Person> per = getEmployee();
+        Sheet sheet = wb.getSheetAt(sheetNumber);
+        List<CellRangeAddress> regions = sheet.getMergedRegions();
         regions.remove(regions.get(0));
-        int l = 0;
+        JourneyStop journeyStop = new JourneyStop();
         for (CellRangeAddress region : regions) {
-            //   CellRangeAddress region = regions.get(i);
-            Journey journey = new Journey();
-            journey.setData(date);
-            Datetime datetime = null;
             int offset = FIRST_ROW_WITH_DATE;
-            Row firstRow = sheet.getRow(region.getFirstRow());
-            if(firstRow == null){
-                break;
-            }
-            Cell cellWithJourneyInfo = firstRow.getCell(sheet.getRow(region.getFirstRow()).getFirstCellNum() + l);
-            if (cellWithJourneyInfo == null){
-                break;
-            }
-            String journeyInfo = cellWithJourneyInfo.
-                    getStringCellValue();
-            l = l + STEP_JOURNEY_BLOCK;
-            if(journeyInfo.split("\\s+").length > 1){
-                journey.setNumber(journeyInfo.split("\\s+")[1]);
-            }
             while (true) {
                 Row beginRow = sheet.getRow(region.getFirstRow() + offset);
                 offset++;
                 if (beginRow == null) {
                     break;
                 }
-                Cell cellNumber = beginRow.getCell(regions.get(0).getFirstColumn() - 1);
-                if (cellNumber == null) {
-                    break;
-                }
-
-
-                JourneyStop journeyStop = new JourneyStop();
-                journey.setNumberForPassengers(String.valueOf(cellNumber.getNumericCellValue()));
-                Cell transportCell = beginRow.getCell(region.getFirstColumn());
-                if (transportCell.getCellType().equals(CellType.FORMULA)) {
-                    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-                    CellReference cellReference = new CellReference(transportCell);
-                    Row rowTransport = sheet.getRow(cellReference.getRow());
-                    Cell cellTransport = rowTransport.getCell(cellReference.getCol());
-                    CellValue idTransport = evaluator.evaluate(cellTransport);
-                    String idTransportStr = String.valueOf((int) idTransport.getNumberValue());
-                    Transport transport = transportMap.get(idTransportStr);
-                    System.out.println();
-                    journeyStop.setTransport(transport);
-                }
-                Cell stopCell = beginRow.getCell(1);
-                if (stopCell != null && stopCell.getCellType().equals(CellType.FORMULA)) {
-                    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-                    CellReference cellReference = new CellReference(stopCell);
-                    Row rowStop = sheet.getRow(cellReference.getRow());
-                    Cell cellStop = rowStop.getCell(cellReference.getCol());
-                    CellValue stop= evaluator.evaluate(cellStop);
-                    String idStopStr = stop.getStringValue();
-                    StopTransport stopTransport = stops.get(idStopStr);
-                    System.out.println();
-                    journeyStop.setStop(stopTransport);
-                }
-
-                Cell personCell = beginRow.getCell(region.getFirstColumn()+ 2);
+                Cell personCell = beginRow.getCell(region.getFirstColumn() + 2);
                 if (personCell.getCellType().equals(CellType.FORMULA)) {
                     FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
                     CellReference cellReference = new CellReference(personCell);
@@ -179,22 +118,161 @@ public class ExcelReader {
                     System.out.println();
                     journeyStop.setInspector(person);
                 }
+            }
+        }
+        return per;
+    }
+
+    public LocalTime getTime(Sheet sheet) throws Exception {
+        List<CellRangeAddress> regions = sheet.getMergedRegions();
+        Journey journey = new Journey();
+        regions.remove(regions.get(0));
+        JourneyStop journeyStop = new JourneyStop();
+        for (CellRangeAddress region : regions) {
+            int offset = FIRST_ROW_WITH_DATE;
+            while (true) {
+                Row beginRow = sheet.getRow(region.getFirstRow() + offset);
+                offset++;
+                if (beginRow == null) {
+                    break;
+                }
                 Cell cellTime = beginRow.getCell(region.getFirstColumn() + 1);
                 if (cellTime == null) {
                     break;
                 }
-                journeyStop.setTime(String.valueOf(cellTime.getLocalDateTimeCellValue()));
+                journeyStop.setTime(LocalTime.from(cellTime.getLocalDateTimeCellValue()));
+                System.out.println();
                 journey.addJourneyStop(journeyStop);
-
             }
-            journeys.add(journey);
+        }
+        return null;
+    }
+
+    public List<List<Journey>> getJourney() throws Exception {
+        List<List<Journey>> listJourneyOther = new LinkedList<>();
+        for (int i = FIRST_JOURNEY_SHEET; i < wb.getNumberOfSheets(); i++) {
+            listJourneyOther.add(getJourney(i));
+        }
+        return listJourneyOther;
+    }
+    public List<Journey> getTransport(Sheet sheet, Map<String, Transport> transportMap) throws Exception {
+        List<CellRangeAddress> regions = sheet.getMergedRegions();
+        List<Journey> journeys = new ArrayList<>();
+        String date = getDate(sheet, sheet.getSheetName());
+        regions.remove(regions.get(0));
+        int l = 0;
+        for (CellRangeAddress region : regions) {
+            //   CellRangeAddress region = regions.get(i);
+            Journey journey = new Journey();
+            journey.setData(date);
+            Datetime datetime = null;
+            int offset = FIRST_ROW_WITH_DATE;
+            Row firstRow = sheet.getRow(region.getFirstRow());
+            if (firstRow == null) {
+                break;
+            }
+            Cell cellWithJourneyInfo = firstRow.getCell(sheet.getRow(region.getFirstRow()).getFirstCellNum() + l);
+            if (cellWithJourneyInfo == null) {
+                break;
+            }
+            String journeyInfo = cellWithJourneyInfo.
+                    getStringCellValue();
+            l = l + STEP_JOURNEY_BLOCK;
+            if (journeyInfo.split("\\s+").length > 1) {
+                journey.setNumber(journeyInfo.split("\\s+")[1]);
+            }
+            while (true) {
+                Row beginRow = sheet.getRow(region.getFirstRow() + offset);
+                offset++;
+                if (beginRow == null) {
+                    break;
+                }
+                Cell cellNumber = beginRow.getCell(regions.get(0).getFirstColumn() - 1);
+                if (cellNumber == null) {
+                    break;
+                }
+
+                JourneyStop journeyStop = new JourneyStop();
+                journey.setNumberForPassengers(String.valueOf(cellNumber.getNumericCellValue()));
+                Cell transportCell = beginRow.getCell(region.getFirstColumn());
+                if (transportCell.getCellType().equals(CellType.FORMULA)) {
+                    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+                    CellReference cellReference = new CellReference(transportCell);
+                    Row rowTransport = sheet.getRow(cellReference.getRow());
+                    Cell cellTransport = rowTransport.getCell(cellReference.getCol());
+                    CellValue idTransport = evaluator.evaluate(cellTransport);
+                    String idTransportStr = String.valueOf((int) idTransport.getNumberValue());
+                    Transport transport = transportMap.get(idTransportStr);
+                    System.out.println();
+                    journeyStop.setTransport(transport);
+                }
+                journeys.add(journey);
+            }
         }
         return journeys;
     }
 
+    public List<Journey> getJourney(int sheetNumber) throws Exception {
+        Sheet sheet = wb.getSheetAt(sheetNumber);
+        Map<String, StopTransport> stops = getStops();
+        List<Journey> journeys = new ArrayList<>();
+        List<CellRangeAddress> regions = sheet.getMergedRegions();
+        String date = getDate(sheet, sheet.getSheetName());
+        regions.remove(regions.get(0));
+        int l = 0;
+        for (CellRangeAddress region : regions) {
+            //   CellRangeAddress region = regions.get(i);
+            Journey journey = new Journey();
+            journey.setData(date);
+            Datetime datetime = null;
+            int offset = FIRST_ROW_WITH_DATE;
+            Row firstRow = sheet.getRow(region.getFirstRow());
+            if (firstRow == null) {
+                break;
+            }
+            Cell cellWithJourneyInfo = firstRow.getCell(sheet.getRow(region.getFirstRow()).getFirstCellNum() + l);
+            if (cellWithJourneyInfo == null) {
+                break;
+            }
+            String journeyInfo = cellWithJourneyInfo.
+                    getStringCellValue();
+            l = l + STEP_JOURNEY_BLOCK;
+            if (journeyInfo.split("\\s+").length > 1) {
+                journey.setNumber(journeyInfo.split("\\s+")[1]);
+            }
+            while (true) {
+                Row beginRow = sheet.getRow(region.getFirstRow() + offset);
+                offset++;
+                if (beginRow == null) {
+                    break;
+                }
+                Cell cellNumber = beginRow.getCell(regions.get(0).getFirstColumn() - 1);
+                if (cellNumber == null) {
+                    break;
+                }
 
-    public List<StopTransport> getStopTransport(Sheet sheet,      Map<String, StopTransport> stops) throws Exception {
+                JourneyStop journeyStop = new JourneyStop();
+                journey.setNumberForPassengers(String.valueOf(cellNumber.getNumericCellValue()));
+                Cell stopCell = beginRow.getCell(1);
+                if (stopCell != null && stopCell.getCellType().equals(CellType.FORMULA)) {
+                    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+                    CellReference cellReference = new CellReference(stopCell);
+                    Row rowStop = sheet.getRow(cellReference.getRow());
+                    Cell cellStop = rowStop.getCell(cellReference.getCol());
+                    CellValue stop = evaluator.evaluate(cellStop);
+                    String idStopStr = stop.getStringValue();
+                    StopTransport stopTransport = stops.get(idStopStr);
+                    System.out.println();
+                    journeyStop.setStop(stopTransport);
+                }
+                journeys.add(journey);
+            }
+        }
+            return journeys;
+    }
 
+
+    public List<StopTransport> getStopTransport(Sheet sheet, Map<String, StopTransport> stops) throws Exception {
         List<StopTransport> journeyStops = new ArrayList<>();
         int i = 3;
         CellValue cellValue;
@@ -217,8 +295,9 @@ public class ExcelReader {
             i++;
         } while (cellValue != null && cellValue.getStringValue() != null);
         return journeyStops;
-
     }
+
+
     public static void main(String[] args) {
         ExcelReader excelReader = new ExcelReader("C:\\Users\\alexe\\Downloads\\Timetable.xls");
         try {
