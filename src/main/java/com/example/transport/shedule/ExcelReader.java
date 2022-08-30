@@ -89,17 +89,14 @@ public class ExcelReader {
         List<Journey> journeys = new ArrayList<>();
         Map<String, Person> per = getEmployee();
         Map<String, Transport> transportMap = getTrolleybus();
-       // List<StopTransport> journeyStops = getStopTransport(sheet, stops);
-        //System.out.println(cellValue);
         List<CellRangeAddress> regions = sheet.getMergedRegions();
-        String date = getDate(sheet.getSheetName());
         regions.remove(regions.get(0));
         int l = 0;
         for (CellRangeAddress region : regions) {
             //   CellRangeAddress region = regions.get(i);
             Journey journey = new Journey();
+            String date = getDate(sheet.getSheetName());
             journey.setData(date);
-            Datetime datetime = null;
             int offset = FIRST_ROW_WITH_DATE;
             Row firstRow = sheet.getRow(region.getFirstRow());
             if(firstRow == null){
@@ -129,56 +126,20 @@ public class ExcelReader {
 
                 JourneyStop journeyStop = new JourneyStop();
                 journey.setNumberForPassengers(String.valueOf(cellNumber.getNumericCellValue()));
-                Cell transportCell = beginRow.getCell(region.getFirstColumn());
-                if (transportCell.getCellType().equals(CellType.FORMULA)) {
-                    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-                    CellReference cellReference = new CellReference(transportCell);
-                    Row rowTransport = sheet.getRow(cellReference.getRow());
-                    Cell cellTransport = rowTransport.getCell(cellReference.getCol());
-                    CellValue idTransport = evaluator.evaluate(cellTransport);
-                    String idTransportStr = String.valueOf((int) idTransport.getNumberValue());
-                    Transport transport = transportMap.get(idTransportStr);
-                    System.out.println();
-                    journeyStop.setTransport(transport);
-                }
-                Cell stopCell = beginRow.getCell(1);
-                if (stopCell != null && stopCell.getCellType().equals(CellType.FORMULA)) {
-                    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-                    CellReference cellReference = new CellReference(stopCell);
-                    Row rowStop = sheet.getRow(cellReference.getRow());
-                    Cell cellStop = rowStop.getCell(cellReference.getCol());
-                    CellValue stop= evaluator.evaluate(cellStop);
-                    String idStopStr = stop.getStringValue();
-                    StopTransport stopTransport = stops.get(idStopStr);
-                    System.out.println();
-                    journeyStop.setStop(stopTransport);
-                }
 
-                Cell personCell = beginRow.getCell(region.getFirstColumn()+ 2);
-                if (personCell.getCellType().equals(CellType.FORMULA)) {
-                    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-                    CellReference cellReference = new CellReference(personCell);
-                    Row rowPerson = sheet.getRow(cellReference.getRow());
-                    Cell cellPerson = rowPerson.getCell(cellReference.getCol());
-                    CellValue title = evaluator.evaluate(cellPerson);
-                    String idDriverStr = title.getStringValue();
-                    Person person = per.get(idDriverStr);
-                    System.out.println();
-                    journeyStop.setDriver(person);
-                }
-
-                Cell inspectorCell = beginRow.getCell(region.getFirstColumn() + 3);
-                if (inspectorCell.getCellType().equals(CellType.FORMULA)) {
-                    FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-                    CellReference cellReference = new CellReference(inspectorCell);
-                    Row rowInspector = sheet.getRow(cellReference.getRow());
-                    Cell cellInspector = rowInspector.getCell(cellReference.getCol());
-                    CellValue title = evaluator.evaluate(cellInspector);
-                    String idInspectorStr = title.getStringValue();
-                    Person person = per.get(idInspectorStr);
-                    System.out.println();
-                    journeyStop.setInspector(person);
-                }
+                double idTransport = getCellValueNumber(sheet, beginRow, region.getFirstColumn());
+                String idTransportStr = String.valueOf((int) idTransport);
+                Transport transport = transportMap.get(idTransportStr);
+                journeyStop.setTransport(transport);
+                String idStopStr = getCellValueString(sheet, beginRow, 1);
+                StopTransport stopTransport = stops.get(idStopStr);
+                journeyStop.setStop(stopTransport);
+                String idDriverStr = getCellValueString(sheet, beginRow, region.getFirstColumn()+ 2);
+                Person driver = per.get(idDriverStr);
+                journeyStop.setDriver(driver);
+                String idInspectorStr = getCellValueString(sheet, beginRow,region.getFirstColumn() + 3 );
+                Person inspector = per.get(idInspectorStr);
+                journeyStop.setInspector(inspector);
                 Cell cellTime = beginRow.getCell(region.getFirstColumn() + 1);
                 if (cellTime == null) {
                     break;
@@ -192,33 +153,36 @@ public class ExcelReader {
         return journeys;
     }
 
-
-    public List<StopTransport> getStopTransport(Sheet sheet,      Map<String, StopTransport> stops) throws Exception {
-
-        List<StopTransport> journeyStops = new ArrayList<>();
-        int i = 3;
-        CellValue cellValue;
-        do {
-            Row row = sheet.getRow(i);
-            cellValue = null;
-            if (row != null) {
-                break;
-            }
-            Cell stopCell = row.getCell(1);
-            if (stopCell != null && stopCell.getCellType().equals(CellType.FORMULA)) {
-                FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
-                CellReference cellReference = new CellReference(stopCell);
-                Row r = sheet.getRow(cellReference.getRow());
-                Cell cell = r.getCell(cellReference.getCol());
-                cellValue = evaluator.evaluate(cell);
-                StopTransport stopTransport = stops.get(cellValue.getStringValue());
-                journeyStops.add(stopTransport);
-            }
-            i++;
-        } while (cellValue != null && cellValue.getStringValue() != null);
-        return journeyStops;
-
+    private String getCellValueString(Sheet sheet, Row row, int columnNumber){
+        Cell inspectorCell = row.getCell(columnNumber);
+        if (inspectorCell.getCellType().equals(CellType.FORMULA)) {
+           CellValue cellValue = getCell(sheet, inspectorCell);
+            String valueString = cellValue.getStringValue();
+           return valueString;
+        }
+        return "";
     }
+
+
+    private double getCellValueNumber(Sheet sheet, Row row, int columnNumber){
+        Cell inspectorCell = row.getCell(columnNumber);
+        if (inspectorCell.getCellType().equals(CellType.FORMULA)) {
+            CellValue cellValue = getCell(sheet, inspectorCell);
+            double valueString = cellValue.getNumberValue();
+            return valueString;
+        }
+        return 0.0;
+    }
+
+    private CellValue getCell(Sheet sheet, Cell cell) {
+        FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+        CellReference cellReference = new CellReference(cell);
+        Row rowInspector = sheet.getRow(cellReference.getRow());
+        Cell cellInspector = rowInspector.getCell(cellReference.getCol());
+        CellValue cellValue = evaluator.evaluate(cellInspector);
+        return cellValue;
+    }
+
     public static void main(String[] args) {
         ExcelReader excelReader = new ExcelReader("C:\\Users\\alexe\\Downloads\\Timetable.xls");
         try {
