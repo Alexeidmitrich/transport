@@ -186,7 +186,7 @@ public class ExcelReader {
     }
 
     public static void main(String[] args) {
-        ExcelReader excelReader = new ExcelReader("C:\\Users\\Dmitry\\Desktop\\Timetable.xls");
+        ExcelReader excelReader = new ExcelReader("C:\\Users\\alexe\\Downloads\\Timetable.xls");
         try {
             /*excelReader.getTrolleybus();
             excelReader.getEmployee();
