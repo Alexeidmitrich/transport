@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Data
+@NoArgsConstructor
+
 public class Schedule {
 
 
-    private Map<Integer,Journey> journeyMap = new HashMap<>();
+    //private Map<Integer,Journey> journeyMap = new HashMap<>();
 
 }

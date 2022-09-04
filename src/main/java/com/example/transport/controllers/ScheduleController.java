@@ -1,7 +1,6 @@
 package com.example.transport.controllers;
 
 import com.example.transport.domain.Schedule;
-import com.example.transport.domain.StopTransport;
 import com.example.transport.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,7 +15,7 @@ public class ScheduleController {
     @Autowired
     private ScheduleService scheduleService;
 
-    @PostMapping(value = "/example1/upload/file",
+    @PostMapping(value = "/upload",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE} )
     public ResponseEntity<String> uploadSingleFileExample1(MultipartFile file) {

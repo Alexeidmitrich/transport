@@ -2,13 +2,13 @@ package com.example.transport.shedule;
 
 import com.example.transport.domain.*;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.LocalTime;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +22,22 @@ public class ExcelReader {
 
 
     private final Workbook wb;
+    private List<Journey> journeys = new LinkedList<>();
     private static final int FIRST_ROW_WITH_DATE = 2;
     private static final int STEP_JOURNEY_BLOCK = 4;
     private static final int FIRST_JOURNEY_SHEET = 4;
+
     public ExcelReader(String fileName) {
         try {
             File fis = new File(fileName);
             wb = WorkbookFactory.create(fis);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public ExcelReader(File file){
+        try{
+           wb = WorkbookFactory.create(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -64,7 +73,7 @@ public class ExcelReader {
         return stopTransporMap;
     }
     public String getDate(String sheetName) throws Exception{
-        Pattern r = Pattern.compile("(.*\\s[0-9]+-[0-9]+)\\s+([0-9]+\\s[a-zA-Zа-яА-Я ]+\\s[0-9]+)");
+        Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)(\\s[0-9.]+)");
         Matcher m = r.matcher(sheetName);
         String date = "";
         if (m.find( )) {
@@ -103,7 +112,7 @@ public class ExcelReader {
             if (beginRow == null) {
                 break;
             }
-            Cell cellNumber = beginRow.getCell(metaInfoRegion.getFirstColumn() - 1);
+            Cell cellNumber = beginRow.getCell(metaInfoRegion.getFirstColumn() + 2);
             if (cellNumber == null) {
                 break;
             }
@@ -126,7 +135,7 @@ public class ExcelReader {
             if (cellTime == null) {
                 break;
             }
-            journeyStop.setTime(String.valueOf(cellTime.getLocalDateTimeCellValue()));
+            journeyStop.setTime(cellTime.getLocalDateTimeCellValue().toLocalTime());
             journey.addJourneyStop(journeyStop);
         }
         return journey;
@@ -134,10 +143,9 @@ public class ExcelReader {
 
     public List<Journey> getJourney(int sheetNumber) throws Exception {
         Sheet sheet = wb.getSheetAt(sheetNumber);
-        List<Journey> journeys = new ArrayList<>();
         List<CellRangeAddress> regions = sheet.getMergedRegions();
         CellRangeAddress regionWithMetaInfo = regions.get(0);
-        regions.remove(regions.get(0));
+        regions.remove(regionWithMetaInfo);
         int l = 0;
         for (CellRangeAddress region : regions) {
             Row firstRow = sheet.getRow(region.getFirstRow());
@@ -149,7 +157,7 @@ public class ExcelReader {
                 break;
             }
             l = l + STEP_JOURNEY_BLOCK;
-            Journey journey  = getJourney(sheet, region, cellWithJourneyInfo,regionWithMetaInfo);
+            Journey journey  = getJourney(sheet, region, cellWithJourneyInfo, regionWithMetaInfo);
             journeys.add(journey);
         }
         return journeys;
@@ -192,7 +200,10 @@ public class ExcelReader {
             excelReader.getEmployee();
             excelReader.getStops();
             excelReader.getDate();*/
-            excelReader.getJourney();
+            List<List<Journey>> journey = excelReader.getJourney();
+            System.out.println(
+
+            );
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
