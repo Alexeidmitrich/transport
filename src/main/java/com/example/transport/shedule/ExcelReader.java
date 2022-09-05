@@ -7,8 +7,6 @@ import org.apache.poi.ss.util.CellReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +20,6 @@ public class ExcelReader {
 
 
     private final Workbook wb;
-    private List<Journey> journeys = new LinkedList<>();
     private static final int FIRST_ROW_WITH_DATE = 2;
     private static final int STEP_JOURNEY_BLOCK = 4;
     private static final int FIRST_JOURNEY_SHEET = 4;
@@ -131,9 +128,12 @@ public class ExcelReader {
             String idInspectorStr = getCellValueString(sheet, beginRow,region.getFirstColumn() + 3 );
             Person inspector = per.get(idInspectorStr);
             journeyStop.setInspector(inspector);
+
             Cell cellTime = beginRow.getCell(region.getFirstColumn() + 1);
-            if (cellTime == null) {
-                break;
+                if (cellTime == null){
+                   break;
+                } if (cellTime.getLocalDateTimeCellValue() == null){
+                    continue;
             }
             journeyStop.setTime(cellTime.getLocalDateTimeCellValue().toLocalTime());
             journey.addJourneyStop(journeyStop);
@@ -144,6 +144,7 @@ public class ExcelReader {
     public List<Journey> getJourney(int sheetNumber) throws Exception {
         Sheet sheet = wb.getSheetAt(sheetNumber);
         List<CellRangeAddress> regions = sheet.getMergedRegions();
+        List<Journey> journeys = new LinkedList<>();
         CellRangeAddress regionWithMetaInfo = regions.get(0);
         regions.remove(regionWithMetaInfo);
         int l = 0;
@@ -200,10 +201,8 @@ public class ExcelReader {
             excelReader.getEmployee();
             excelReader.getStops();
             excelReader.getDate();*/
-            List<List<Journey>> journey = excelReader.getJourney();
-            System.out.println(
-
-            );
+            excelReader.getJourney();
+            System.out.println();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
