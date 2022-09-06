@@ -17,7 +17,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class StopTransport {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @ExcelColumn(name="Номер")
     private String id;
     @ExcelColumn(name = "Название")

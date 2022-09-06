@@ -15,9 +15,8 @@ import java.time.LocalTime;
 @Entity
 public class JourneyStop {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "transport_id")
@@ -31,15 +30,7 @@ public class JourneyStop {
     @ManyToOne
     @JoinColumn(name = "inspector_id")
     private Person inspector;
+
     private LocalTime time;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 
 }

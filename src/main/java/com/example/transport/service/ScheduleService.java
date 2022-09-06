@@ -3,6 +3,7 @@ package com.example.transport.service;
 import com.example.transport.domain.*;
 import com.example.transport.repository.JourneyStopRepo;
 import com.example.transport.repository.PersonRepository;
+import com.example.transport.repository.StopTransportRepo;
 import com.example.transport.repository.TransportRepo;
 import com.example.transport.shedule.ExcelReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import java.util.List;
-
+import java.util.*;
 
 
 @Service
@@ -29,6 +29,8 @@ public class ScheduleService {
     private PersonRepository personRepository;
     @Autowired
     private TransportRepo transportRepo;
+    @Autowired
+    private StopTransportRepo stopTransportRepo;
 
 
     public void saveDataFromFile(MultipartFile file){
@@ -39,8 +41,16 @@ public class ScheduleService {
         List<List<Journey>> listJourneyOther = null;
         try{
             listJourneyOther = excelReader.getJourney();
-            //Collection<Person> persons = excelReader.getEmployee().values();
-            //personRepository.saveAll(journey.getEmployee());
+            Map<String, Person> per = excelReader.getEmployee();
+            personRepository.saveAll(per.values());
+            Map<String, Transport> transport = excelReader.getTransport();
+            transportRepo.saveAll(transport.values());
+            Map<String, StopTransport> stops = excelReader.getStops();
+            stopTransportRepo.saveAll(stops.values());
+            List<JourneyStop> journeyStops  = null;
+            for (int i = 0; i < journeyStops.size(); i++) {
+
+            }
             System.out.println(listJourneyOther);
         } catch (Exception e) {
             throw new RuntimeException(e);

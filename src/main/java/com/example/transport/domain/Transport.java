@@ -11,11 +11,8 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "transport", discriminatorType = DiscriminatorType.STRING)
 public class Transport {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     @ExcelColumn(name = "Номер")
     protected String id;

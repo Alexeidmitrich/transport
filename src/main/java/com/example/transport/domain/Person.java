@@ -12,10 +12,8 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Person {
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
    @Column(nullable = false)
    @ExcelColumn(name = "Номер")
    private String id;

@@ -7,6 +7,7 @@ import org.apache.poi.ss.util.CellReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class ExcelReader {
             throw new RuntimeException(e);
         }
     }
-    public  Map<String, Transport> getTrolleybus() throws  Exception{
+    public  Map<String, Transport> getTransport() throws  Exception{
           Sheet sheet = wb.getSheetAt(0);
           List<Transport> trolleybuses = PoiPOJOUtils.sheetToPOJO(sheet, Transport.class)
                   .stream().filter(transport -> !transport.getId().isEmpty()).collect(Collectors.toList());
@@ -92,7 +93,7 @@ public class ExcelReader {
     private Journey getJourney(Sheet sheet, CellRangeAddress region, Cell cellWithJourneyInfo, CellRangeAddress metaInfoRegion) throws Exception {
         Map<String, StopTransport> stops = getStops();
         Map<String, Person> per = getEmployee();
-        Map<String, Transport> transportMap = getTrolleybus();
+        Map<String, Transport> transportMap = getTransport();
         Journey journey = new Journey();
         String date = getDate(sheet.getSheetName());
         journey.setData(date);
@@ -144,7 +145,7 @@ public class ExcelReader {
     public List<Journey> getJourney(int sheetNumber) throws Exception {
         Sheet sheet = wb.getSheetAt(sheetNumber);
         List<CellRangeAddress> regions = sheet.getMergedRegions();
-        List<Journey> journeys = new LinkedList<>();
+        List<Journey> journeys = new ArrayList<>();
         CellRangeAddress regionWithMetaInfo = regions.get(0);
         regions.remove(regionWithMetaInfo);
         int l = 0;
