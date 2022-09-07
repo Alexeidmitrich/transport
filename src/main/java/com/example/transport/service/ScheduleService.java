@@ -1,10 +1,7 @@
 package com.example.transport.service;
 
 import com.example.transport.domain.*;
-import com.example.transport.repository.JourneyStopRepo;
-import com.example.transport.repository.PersonRepository;
-import com.example.transport.repository.StopTransportRepo;
-import com.example.transport.repository.TransportRepo;
+import com.example.transport.repository.*;
 import com.example.transport.shedule.ExcelReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +28,8 @@ public class ScheduleService {
     private TransportRepo transportRepo;
     @Autowired
     private StopTransportRepo stopTransportRepo;
+    @Autowired
+    private JourneyRepo journeyRepo;
 
 
     public void saveDataFromFile(MultipartFile file){
@@ -38,20 +37,20 @@ public class ScheduleService {
         System.out.println(tmpDir);
         Path path = write(file, Paths.get(tmpDir));
         ExcelReader excelReader = new ExcelReader(path.toFile());
-        List<List<Journey>> listJourneyOther = null;
+        List<List<Journey>> journeyList = null;
         try{
-            listJourneyOther = excelReader.getJourney();
+            journeyList = excelReader.getJourney();
             Map<String, Person> per = excelReader.getEmployee();
             personRepository.saveAll(per.values());
             Map<String, Transport> transport = excelReader.getTransport();
             transportRepo.saveAll(transport.values());
             Map<String, StopTransport> stops = excelReader.getStops();
             stopTransportRepo.saveAll(stops.values());
-            List<JourneyStop> journeyStops  = null;
-            for (int i = 0; i < journeyStops.size(); i++) {
-
+            for (int i = 0; i < journeyList.size(); i++) {
+                List<Journey> journeys  = journeyList.get(i);
+                journeyRepo.saveAll(journeys);
             }
-            System.out.println(listJourneyOther);
+            System.out.println(journeyList);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

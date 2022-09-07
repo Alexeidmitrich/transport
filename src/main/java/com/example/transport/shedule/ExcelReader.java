@@ -7,10 +7,9 @@ import org.apache.poi.ss.util.CellReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,24 +69,26 @@ public class ExcelReader {
         System.out.println(stopTransportList);
         return stopTransporMap;
     }
-    public String getDate(String sheetName) throws Exception{
-        Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)(\\s[0-9.]+)");
+    public LocalDate getDate(String sheetName) throws Exception{
+       // Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)(\\s[0-9.]+)");
+        Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)\\s([0-9]+.[0-9]+.[0-9]+)");
         Matcher m = r.matcher(sheetName);
-        String date = "";
+        DateTimeFormatter formatter = (DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         if (m.find( )) {
-            date = m.group(2);
-            return date;
+          LocalDate  date = LocalDate.parse(m.group(2), formatter);
+            System.out.println(date);
+          return date;
         }
 
         return null;// regions;
     }
 
     public List<List<Journey>> getJourney() throws Exception {
-        List<List<Journey>> listJourneyOther = new LinkedList<>();
+        List<List<Journey>> journeyList = new LinkedList<>();
         for (int i = FIRST_JOURNEY_SHEET; i < wb.getNumberOfSheets() ; i++) {
-            listJourneyOther.add(getJourney(i));
+            journeyList.add(getJourney(i));
         }
-        return listJourneyOther;
+        return journeyList;
     }
 
     private Journey getJourney(Sheet sheet, CellRangeAddress region, Cell cellWithJourneyInfo, CellRangeAddress metaInfoRegion) throws Exception {
@@ -95,8 +96,8 @@ public class ExcelReader {
         Map<String, Person> per = getEmployee();
         Map<String, Transport> transportMap = getTransport();
         Journey journey = new Journey();
-        String date = getDate(sheet.getSheetName());
-        journey.setData(date);
+        LocalDate date = getDate(sheet.getSheetName());
+        journey.setDate(date);
         String journeyInfo = cellWithJourneyInfo.
                 getStringCellValue();
 

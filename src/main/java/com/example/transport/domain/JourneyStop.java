@@ -15,8 +15,9 @@ import java.time.LocalTime;
 @Entity
 public class JourneyStop {
     @Id
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private String id;
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "transport_id")
@@ -33,4 +34,15 @@ public class JourneyStop {
 
     private LocalTime time;
 
+    @ManyToOne
+    @JoinColumn(name = "journey_id")
+    private Journey journey;
+
+    public Journey getJourney() {
+        return journey;
+    }
+
+    public void setJourney(Journey journey) {
+        this.journey = journey;
+    }
 }

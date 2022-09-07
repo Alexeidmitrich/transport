@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Data
@@ -16,6 +20,5 @@ public class Transport {
     @Column(nullable = false)
     @ExcelColumn(name = "Номер")
     protected String id;
-
 
 }
