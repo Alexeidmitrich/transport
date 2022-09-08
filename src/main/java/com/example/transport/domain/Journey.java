@@ -15,13 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Journey {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String number;
     private String numberForPassengers;
-    @OneToMany(mappedBy = "journey", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "journey", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<JourneyStop> journeyStops = new ArrayList<>();
     private LocalDate date;
 

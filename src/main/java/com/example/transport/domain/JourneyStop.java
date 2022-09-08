@@ -33,16 +33,7 @@ public class JourneyStop {
     private Person inspector;
 
     private LocalTime time;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "journey_id")
     private Journey journey;
-
-    public Journey getJourney() {
-        return journey;
-    }
-
-    public void setJourney(Journey journey) {
-        this.journey = journey;
-    }
 }

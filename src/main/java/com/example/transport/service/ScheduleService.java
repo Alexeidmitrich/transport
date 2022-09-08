@@ -50,7 +50,6 @@ public class ScheduleService {
                 List<Journey> journeys  = journeyList.get(i);
                 journeyRepo.saveAll(journeys);
             }
-            System.out.println(journeyList);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

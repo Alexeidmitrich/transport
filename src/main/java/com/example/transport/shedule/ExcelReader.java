@@ -46,7 +46,6 @@ public class ExcelReader {
           Map<String, Transport> trolleybus = trolleybuses
                     .stream()
                     .collect(Collectors.toMap(Transport::getId, Function.identity()));
-          System.out.println(trolleybus);
          return trolleybus;
     }
 
@@ -57,7 +56,6 @@ public class ExcelReader {
         Map<String, Person> personMap = personList
                 .stream()
                 .collect(Collectors.toMap(Person::getId, Function.identity()));
-        System.out.println(personList);
         return personMap;
     }
     public Map<String , StopTransport> getStops() throws Exception {
@@ -66,21 +64,18 @@ public class ExcelReader {
         Map<String, StopTransport> stopTransporMap = stopTransportList
                 .stream()
                         .collect(Collectors.toMap(StopTransport::getId, Function.identity()));
-        System.out.println(stopTransportList);
         return stopTransporMap;
     }
     public LocalDate getDate(String sheetName) throws Exception{
-       // Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)(\\s[0-9.]+)");
         Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)\\s([0-9]+.[0-9]+.[0-9]+)");
         Matcher m = r.matcher(sheetName);
         DateTimeFormatter formatter = (DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         if (m.find( )) {
           LocalDate  date = LocalDate.parse(m.group(2), formatter);
-            System.out.println(date);
           return date;
         }
 
-        return null;// regions;
+        return null;
     }
 
     public List<List<Journey>> getJourney() throws Exception {
@@ -204,7 +199,6 @@ public class ExcelReader {
             excelReader.getStops();
             excelReader.getDate();*/
             excelReader.getJourney();
-            System.out.println();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
