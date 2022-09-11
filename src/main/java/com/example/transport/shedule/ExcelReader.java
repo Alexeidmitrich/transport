@@ -32,6 +32,7 @@ public class ExcelReader {
             throw new RuntimeException(e);
         }
     }
+
     public ExcelReader(File file){
         try{
            wb = WorkbookFactory.create(file);
@@ -39,10 +40,11 @@ public class ExcelReader {
             throw new RuntimeException(e);
         }
     }
+
     public  Map<String, Transport> getTransport() throws  Exception{
           Sheet sheet = wb.getSheetAt(0);
           List<Transport> trolleybuses = PoiPOJOUtils.sheetToPOJO(sheet, Transport.class)
-                  .stream().filter(transport -> !transport.getId().isEmpty()).collect(Collectors.toList());
+          .stream().filter(transport -> !transport.getId().isEmpty()).collect(Collectors.toList());
           Map<String, Transport> trolleybus = trolleybuses
                     .stream()
                     .collect(Collectors.toMap(Transport::getId, Function.identity()));
@@ -54,23 +56,23 @@ public class ExcelReader {
         Sheet sheet = wb.getSheetAt(2);
         List<Person> personList = PoiPOJOUtils.sheetToPOJO(sheet, Person.class);
         Map<String, Person> personMap = personList
-                .stream()
-                .collect(Collectors.toMap(Person::getId, Function.identity()));
+        .stream().collect(Collectors.toMap(Person::getId, Function.identity()));
         return personMap;
     }
+
     public Map<String , StopTransport> getStops() throws Exception {
         Sheet sheet = wb.getSheetAt(3);
         List<StopTransport> stopTransportList = PoiPOJOUtils.sheetToPOJO(sheet, StopTransport.class);
         Map<String, StopTransport> stopTransporMap = stopTransportList
-                .stream()
-                        .collect(Collectors.toMap(StopTransport::getId, Function.identity()));
+        .stream().collect(Collectors.toMap(StopTransport::getId, Function.identity()));
         return stopTransporMap;
     }
+
     public LocalDate getDate(String sheetName) throws Exception{
         Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)\\s([0-9]+.[0-9]+.[0-9]+)");
         Matcher m = r.matcher(sheetName);
         DateTimeFormatter formatter = (DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        if (m.find( )) {
+        if (m.find()) {
           LocalDate  date = LocalDate.parse(m.group(2), formatter);
           return date;
         }
@@ -79,6 +81,7 @@ public class ExcelReader {
     }
 
     public List<List<Journey>> getJourney() throws Exception {
+        // Map<LocalDate, List<Journey>> journeyMap = new HashMap<>();
         List<List<Journey>> journeyList = new LinkedList<>();
         for (int i = FIRST_JOURNEY_SHEET; i < wb.getNumberOfSheets() ; i++) {
             journeyList.add(getJourney(i));
