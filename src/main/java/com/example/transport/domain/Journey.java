@@ -26,6 +26,10 @@ public class Journey {
     private List<JourneyStop> journeyStops = new ArrayList<>();
     private LocalDate date;
 
+    @ManyToOne
+    @JoinColumn(name = "line_id_lines")
+    private Line line;
+
 
     public void addJourneyStop(JourneyStop stop){
         journeyStops.add(stop);

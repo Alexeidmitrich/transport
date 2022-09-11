@@ -24,7 +24,7 @@ public class LineService {
     }
     public void updateLine(int id, Line lines){
         Line oldLines = lineRepo.getReferenceById(id);
-        oldLines.setNumber(lines.getNumber());
+        //oldLines.setNumber(lines.getNumber());
         lineRepo.save(oldLines);
     }
     public void deleteLine(int id){

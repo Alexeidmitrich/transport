@@ -1,7 +1,12 @@
 package com.example.transport.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "city_lines")
 public class Line {
@@ -10,18 +15,4 @@ public class Line {
     @Column(nullable=false, name = "id_lines")
     private int number;
 
-    public Line(int number) {
-        this.number = number;
-    }
-
-    public Line() {
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public int getNumber() {
-        return number;
-    }
 }

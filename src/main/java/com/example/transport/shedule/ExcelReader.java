@@ -134,6 +134,7 @@ public class ExcelReader {
             }
             journeyStop.setTime(cellTime.getLocalDateTimeCellValue().toLocalTime());
             journey.addJourneyStop(journeyStop);
+            journeyStop.setJourney(journey);
         }
         return journey;
     }
