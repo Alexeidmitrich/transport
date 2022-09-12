@@ -1,18 +1,18 @@
 package com.example.transport.domain;
 
 import com.example.transport.shedule.ExcelColumn;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "stoptransport")
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class StopTransport {
@@ -29,9 +29,17 @@ public class StopTransport {
     @Column(name = "tram", nullable = false)
     private String tram;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "tutorial_tags",
+            joinColumns = { @JoinColumn(name = "tutorial_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id") })
+    private Set<Line> lines = new HashSet<>();
 
-    @ManyToMany
-    @JoinColumn(name = "id_lines")
-    private Set<Line> lines;
-
+    public void addLine(Line line) {
+        lines.add(line);
+    }
 }

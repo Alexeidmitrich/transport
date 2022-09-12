@@ -16,18 +16,18 @@ public class LineService {
     public List<Line> getAllLine(){
        return lineRepo.findAll();
     }
-    public Line getLineById(int id){
+    public Line getLineById(String id){
        return lineRepo.findById(id).orElseThrow(()->new LinesException("Lines with id " + id + " was not found"));
     }
     public void addLine(Line lines) {
         lineRepo.save(lines);
     }
-    public void updateLine(int id, Line lines){
+    public void updateLine(String id, Line lines){
         Line oldLines = lineRepo.getReferenceById(id);
         //oldLines.setNumber(lines.getNumber());
         lineRepo.save(oldLines);
     }
-    public void deleteLine(int id){
+    public void deleteLine(String id){
         lineRepo.deleteById(id);
     }
 }

@@ -2,6 +2,9 @@ package com.example.transport.controllers;
 
 import com.example.transport.domain.Line;
 import com.example.transport.service.LineService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +21,17 @@ public class LineController {
         return lineService.getAllLine();
     }
     @GetMapping("/lines/{id}")
-    public Line getLineById(@PathVariable int id){
-        return lineService.getLineById(id);
+    public Object getLineById(@PathVariable String id){
+
+        Line li = lineService.getLineById(id);
+        @AllArgsConstructor
+        @NoArgsConstructor
+        @Data
+        class  Cl {
+            String number;
+        }
+        return  new Cl(li.getNumber());
+
     }
     @PostMapping("/lines")
     public String addNewLine(@RequestBody Line line){
@@ -27,12 +39,12 @@ public class LineController {
         return "Ok";
     }
     @PutMapping("/lines/{id}")
-    public String updateLine(@PathVariable int id, @RequestBody Line line){
+    public String updateLine(@PathVariable String id, @RequestBody Line line){
         lineService.updateLine(id, line);
         return "Ok";
     }
     @DeleteMapping("/lines/{id}")
-    public String deleteLine(@PathVariable int id){
+    public String deleteLine(@PathVariable String id){
         lineService.deleteLine(id);
         return "Ok";
     }

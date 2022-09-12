@@ -3,6 +3,7 @@ package com.example.transport.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 import javax.persistence.*;
@@ -22,12 +23,13 @@ public class Journey {
 
     private String number;
     private String numberForPassengers;
-    @OneToMany(mappedBy = "journey", cascade=CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy = "journey", fetch = FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval=true)
     private List<JourneyStop> journeyStops = new ArrayList<>();
     private LocalDate date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "line_id_lines")
+    @ToString.Exclude
     private Line line;
 
 
