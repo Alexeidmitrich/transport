@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,6 +43,18 @@ class ExcelReaderTest {
         //JourneyStop stop = stops.get(0);
         assertEquals(7,stops.size());
 
+    }
+
+    @Test
+    void emptyFileTest() throws Exception {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("com.example.transport.shedule/EmptyTimetable.xls").getFile());
+        ExcelReader excelReader = new ExcelReader(file);
+        List<List<Journey>> journeys = excelReader.getJourney();
+        assertEquals(0, journeys.size());
+        //TODO
+        //Map<String, Person> persons = excelReader.getEmployee();
+        //assertEquals(0, persons.size());
     }
 
     private void testList( List<List<Journey>> journeyList,int index, int expectedSize) {
