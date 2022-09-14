@@ -1,7 +1,7 @@
 package com.example.transport.controllers;
 
 import com.example.transport.domain.JourneyStop;
-import com.example.transport.service.JourneyStopService;
+import com.example.transport.service.JourneyStopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 public class JourneyStopController {
     @Autowired
-    JourneyStopService journeyStopService;
+    JourneyStopServiceImpl journeyStopService;
 
     @GetMapping("/journeyStop")
     public List<JourneyStop> getAllJourneyStop(){

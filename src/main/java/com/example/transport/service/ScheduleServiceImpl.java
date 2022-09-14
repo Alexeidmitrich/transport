@@ -17,7 +17,7 @@ import java.util.*;
 
 
 @Service
-public class ScheduleService {
+public class ScheduleServiceImpl {
    // @Autowired
    // private ScheduleRepo scheduleRepo;
     @Autowired

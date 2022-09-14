@@ -1,7 +1,7 @@
 package com.example.transport.controllers;
 
 import com.example.transport.domain.Transport;
-import com.example.transport.service.TransportService;
+import com.example.transport.service.TransportServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +10,7 @@ import java.util.List;
 @RestController
 public class TransportController {
     @Autowired
-    private TransportService transportService;
+    private TransportServiceImpl transportService;
 
     @GetMapping("/transport")
     public List<Transport> getAllTransport(){

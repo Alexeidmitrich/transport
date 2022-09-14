@@ -37,7 +37,6 @@ class ExcelReaderTest {
             Person inspector = journeyStop.getInspector();
             assertEquals("НДД92345-2009", inspector.getId());
             assertEquals("Ногакин Дмитрий Дмитриевич", inspector.getFio());
-
         }
         List<JourneyStop> stops = journeyInnerFirstList.get(0).getJourneyStops();
         //JourneyStop stop = stops.get(0);

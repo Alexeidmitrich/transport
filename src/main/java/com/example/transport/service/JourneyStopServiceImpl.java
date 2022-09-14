@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class JourneyStopService {
+public class JourneyStopServiceImpl {
     @Autowired
     private JourneyStopRepo journeyStopRepo;
 
