@@ -55,8 +55,8 @@ class ExcelReaderTest {
         List<List<Journey>> journeys = excelReader.getJourney();
         assertEquals(0, journeys.size());
         //TODO
-        Map<String, Person> personMap = excelReader.getEmployee();
-        assertEquals(0, personMap.size());
+        assertThrows(ExcelException.class, () ->excelReader.getEmployee(), "Expected ExcelException. File is empty");
+
     }
 
     private void testList( List<List<Journey>> journeyList,int index, int expectedSize) {
