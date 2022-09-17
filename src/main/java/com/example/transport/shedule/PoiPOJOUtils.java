@@ -24,7 +24,6 @@ public class PoiPOJOUtils {
             String value = formatter.formatCellValue(cell, evaluator);
             colHeaders.put(colIdx, value);
         }
-
         // collecting the content rows
         List<T> result = new ArrayList<T>();
         String cellValue = "";

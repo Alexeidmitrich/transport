@@ -7,7 +7,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.List;
 import com.itextpdf.layout.element.Paragraph;
 
-    public class PDFReaderNew{
+    public class WriterPdfNew {
         public static void main(String args[]) throws Exception {
             String dest = "C:\\Users\\alexe\\Downloads\\Doc2.pdf";
             PdfWriter writer = new PdfWriter(dest);

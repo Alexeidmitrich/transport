@@ -5,12 +5,11 @@ import java.io.IOException;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfWriter;
 
-public class PdfReader {
+public class WriterPdf {
     private String fileName;
 
-    public PdfReader(String fileName) {
+    public WriterPdf(String fileName) {
         this.fileName = fileName;
     }
 
@@ -18,10 +17,10 @@ public class PdfReader {
         Font normalFont = FontFactory.getFont("/fonts/times-roman.ttf", "cp1251", BaseFont.EMBEDDED, 22);
         try (FileOutputStream fs = new FileOutputStream(fileName)) {
             Document document = new Document();
-            PdfWriter.getInstance(document, fs);
+            com.itextpdf.text.pdf.PdfWriter.getInstance(document, fs);
             document.open();
             Paragraph paragraph = new Paragraph();
-            paragraph.add(new Paragraph("Привет", normalFont));
+            paragraph.add(new Paragraph("Вся проблема была в шрифтах", normalFont));
             document.add(paragraph);
             document.close();
         }
@@ -33,7 +32,7 @@ public class PdfReader {
     }
 
     public static void main(String[] args){
-        PdfReader pdf = new PdfReader("C:\\Users\\alexe\\Downloads\\Doc1.pdf");
+        WriterPdf pdf = new WriterPdf("C:\\Users\\alexe\\Downloads\\Doc1.pdf");
         pdf.getPdfInCyrillic();
         System.out.println();
     }
