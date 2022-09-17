@@ -19,6 +19,9 @@ public class PoiPOJOUtils {
         // collecting the column headers as a Map of header names to column indexes
         Map<Integer, String> colHeaders = new HashMap<Integer, String>();
         Row row = sheet.getRow(headerRowNum);
+        if(row == null){
+            throw new ExcelException("Excel is empty");
+        }
         for (Cell cell : row) {
             int colIdx = cell.getColumnIndex();
             String value = formatter.formatCellValue(cell, evaluator);
