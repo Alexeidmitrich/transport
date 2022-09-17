@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class WriterPdf {
     private String fileName;
@@ -17,10 +18,10 @@ public class WriterPdf {
         Font normalFont = FontFactory.getFont("/fonts/times-roman.ttf", "cp1251", BaseFont.EMBEDDED, 22);
         try (FileOutputStream fs = new FileOutputStream(fileName)) {
             Document document = new Document();
-            com.itextpdf.text.pdf.PdfWriter.getInstance(document, fs);
+            PdfWriter.getInstance(document, fs);
             document.open();
             Paragraph paragraph = new Paragraph();
-            paragraph.add(new Paragraph("Вся проблема была в шрифтах", normalFont));
+            paragraph.add(new Paragraph("Проблема со шрифтами", normalFont));
             document.add(paragraph);
             document.close();
         }
