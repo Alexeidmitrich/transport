@@ -74,10 +74,19 @@ class ExcelReaderTest {
             assertTrue(transportMap.containsKey(trollTransport[i]));
         }
     }
+
     @Test
     void getJourneyWrong() throws Exception{
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("com.example.transport.shedule/TimetableMoreWrong.xls").getFile());
+        ExcelReader excelReader = new ExcelReader(file);
+        assertThrows(ExcelException.class,()->excelReader.getJourney(),"");
+    }
+
+    @Test
+    void emptyPeopleTest() throws Exception{
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("com.example.transport.shedule/TimeTableEmptyPeople.xls").getFile());
         ExcelReader excelReader = new ExcelReader(file);
         assertThrows(ExcelException.class,()->excelReader.getJourney(),"");
     }
