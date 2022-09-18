@@ -171,9 +171,9 @@ public class ExcelReader {
 
     private String getCellValueString(Sheet sheet, Row row, int columnNumber){
         Cell inspectorCell = row.getCell(columnNumber);
-        /*if(inspectorCell == null){
-            throw new ExcelException("Excel is empty");
-        }*/
+        if(inspectorCell == null){
+           throw new ExcelException("Excel is empty");
+        }
         if (inspectorCell.getCellType().equals(CellType.FORMULA)) {
            CellValue cellValue = getCell(sheet, inspectorCell);
             String valueString = cellValue.getStringValue();
