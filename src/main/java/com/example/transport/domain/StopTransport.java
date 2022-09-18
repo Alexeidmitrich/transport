@@ -13,6 +13,7 @@ import java.util.Set;
 @Table(name = "stoptransport")
 @Setter
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class StopTransport {

@@ -53,9 +53,15 @@ class ExcelReaderTest {
         ExcelReader excelReader = new ExcelReader(file);
         List<List<Journey>> journeys = excelReader.getJourney();
         assertEquals(0, journeys.size());
+<<<<<<< HEAD
 
         assertThrows(ExcelException.class, ()->excelReader.getEmployee(), "Expected ExcelException. Excel is empty");
         assertThrows(ExcelException.class, ()->excelReader.getStops(), "Expected ExcelException. Excel is empty");
+=======
+        //TODO
+        assertThrows(ExcelException.class, () ->excelReader.getEmployee(), "Expected ExcelException. File is empty");
+
+>>>>>>> 2561a7babfa3522d2b26bef6e30822e843f7b4d1
     }
 
     private void testList( List<List<Journey>> journeyList,int index, int expectedSize) {

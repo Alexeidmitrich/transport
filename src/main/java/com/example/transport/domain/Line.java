@@ -1,5 +1,6 @@
 package com.example.transport.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 
@@ -9,6 +10,7 @@ import java.util.*;
 @Entity
 @Setter
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "city_lines")
