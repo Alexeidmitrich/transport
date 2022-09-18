@@ -1,9 +1,7 @@
 package com.example.transport.shedule;
 
-import com.example.transport.domain.Journey;
-import com.example.transport.domain.JourneyStop;
-import com.example.transport.domain.Person;
-import com.example.transport.domain.StopTransport;
+import com.example.transport.domain.*;
+import com.example.transport.exception.ExcelException;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -44,6 +42,7 @@ class ExcelReaderTest {
             assertEquals(expectedTime[i], timeJourney.toString());
             StopTransport stop = journeyStop.getStop();
             assertEquals(stopTransport[i],stop.getId());
+
         }
     }
 
@@ -54,14 +53,35 @@ class ExcelReaderTest {
         ExcelReader excelReader = new ExcelReader(file);
         List<List<Journey>> journeys = excelReader.getJourney();
         assertEquals(0, journeys.size());
-        //TODO
-        Map<String, Person> personMap = excelReader.getEmployee();
-        assertEquals(0, personMap.size());
+
+        assertThrows(ExcelException.class, ()->excelReader.getEmployee(), "Expected ExcelException. Excel is empty");
+        assertThrows(ExcelException.class, ()->excelReader.getStops(), "Expected ExcelException. Excel is empty");
     }
 
     private void testList( List<List<Journey>> journeyList,int index, int expectedSize) {
         List<Journey> journeyInnerFirstList = journeyList.get(index);
         assertEquals(expectedSize, journeyInnerFirstList.size());
+    }
+    @Test
+    void transportTest() throws Exception {
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("com.example.transport.shedule/Timetable.xls").getFile());
+        ExcelReader excelReader = new ExcelReader(file);
+        Map<String, Transport> transportMap = excelReader.getTransport();
+        String[] trollTransport = {"894","895","896","897","986","677","543","4322","4565","4433","4555","2134","2135","2156","4569"};
+        for (int i = 0; i < trollTransport.length; i++) {
+            //System.out.println(entry.getKey() + " <> " + entry.getValue());
+            assertTrue(transportMap.containsKey(trollTransport[i]));
+        }
+    }
+    @Test
+    void getJourneyWrong() throws Exception{
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("com.example.transport.shedule/TimetableMoreWrong.xls").getFile());
+        ExcelReader excelReader = new ExcelReader(file);
+        List<List<Journey>> journeys= excelReader.getJourney();
+        assertEquals(0,journeys.size());
+        assertThrows(ExcelException.class,()->excelReader.getJourney(),"");
     }
 
 

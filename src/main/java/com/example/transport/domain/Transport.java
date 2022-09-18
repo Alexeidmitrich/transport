@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Setter
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transport {
@@ -16,5 +17,6 @@ public class Transport {
     @Column(nullable = false)
     @ExcelColumn(name = "Номер")
     protected String id;
+
 
 }

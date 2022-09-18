@@ -1,6 +1,7 @@
 package com.example.transport.shedule;
 
 import com.example.transport.domain.*;
+import com.example.transport.exception.ExcelException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -43,32 +44,36 @@ public class ExcelReader {
 
     public  Map<String, Transport> getTransport() throws  Exception{
           Sheet sheet = wb.getSheetAt(0);
-          List<Transport> trolleybuses = PoiPOJOUtils.sheetToPOJO(sheet, Transport.class)
+          List<Transport> transportMaps = PoiPOJOUtils.sheetToPOJO(sheet, Transport.class)
           .stream().filter(transport -> !transport.getId().isEmpty()).collect(Collectors.toList());
-          Map<String, Transport> trolleybus = trolleybuses
-                    .stream()
-                    .collect(Collectors.toMap(Transport::getId, Function.identity()));
-         return trolleybus;
+          Map<String, Transport> transportMap = transportMaps
+                  .stream()
+                  .collect(Collectors.toMap(Transport::getId, Function.identity()));
+         return transportMap;
     }
-
 
     public Map<String, Person> getEmployee() throws Exception {
         Sheet sheet = wb.getSheetAt(2);
         List<Person> personList = PoiPOJOUtils.sheetToPOJO(sheet, Person.class);
         Map<String, Person> personMap = personList
-        .stream().collect(Collectors.toMap(Person::getId, Function.identity()));
+                .stream()
+                .collect(Collectors.toMap(Person::getId, Function.identity()));
         return personMap;
     }
 
     public Map<String , StopTransport> getStops() throws Exception {
+        if(wb.getNumberOfSheets() < 4){
+            throw new ExcelException("Excel has no sheet with stops");
+        }
         Sheet sheet = wb.getSheetAt(3);
         List<StopTransport> stopTransportList = PoiPOJOUtils.sheetToPOJO(sheet, StopTransport.class);
         Map<String, StopTransport> stopTransporMap = stopTransportList
-        .stream().collect(Collectors.toMap(StopTransport::getId, Function.identity()));
+                .stream()
+                .collect(Collectors.toMap(StopTransport::getId, Function.identity()));
         return stopTransporMap;
     }
 
-    public LocalDate getDate(String sheetName) throws Exception{
+    private LocalDate getDate(String sheetName) throws Exception{
         Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)\\s([0-9]+.[0-9]+.[0-9]+)");
         Matcher m = r.matcher(sheetName);
         DateTimeFormatter formatter = (DateTimeFormatter.ofPattern("dd.MM.yyyy"));
@@ -76,8 +81,7 @@ public class ExcelReader {
           LocalDate  date = LocalDate.parse(m.group(2), formatter);
           return date;
         }
-
-        return null;
+        throw  new ExcelException("The date is wrong");
     }
 
     public List<List<Journey>> getJourney() throws Exception {
@@ -167,6 +171,9 @@ public class ExcelReader {
 
     private String getCellValueString(Sheet sheet, Row row, int columnNumber){
         Cell inspectorCell = row.getCell(columnNumber);
+        /*if(inspectorCell == null){
+            throw new ExcelException("Excel is empty");
+        }*/
         if (inspectorCell.getCellType().equals(CellType.FORMULA)) {
            CellValue cellValue = getCell(sheet, inspectorCell);
             String valueString = cellValue.getStringValue();
