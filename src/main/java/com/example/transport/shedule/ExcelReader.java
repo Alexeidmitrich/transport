@@ -74,7 +74,7 @@ public class ExcelReader {
     }
 
     private LocalDate getDate(String sheetName) throws Exception{
-        Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)\\s([0-9]+.[0-9]+.[0-9]+)");
+        Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)\\s([0-9]+\\.[0-9]+\\.[0-9]+)");
         Matcher m = r.matcher(sheetName);
         DateTimeFormatter formatter = (DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         if (m.find()) {

@@ -55,7 +55,6 @@ class ExcelReaderTest {
         assertEquals(0, journeys.size());
         assertThrows(ExcelException.class, ()->excelReader.getEmployee(), "Expected ExcelException. Excel is empty");
         assertThrows(ExcelException.class, ()->excelReader.getStops(), "Expected ExcelException. Excel is empty");
-
     }
 
     private void testList( List<List<Journey>> journeyList,int index, int expectedSize) {
@@ -87,6 +86,14 @@ class ExcelReaderTest {
     void emptyPeopleTest() throws Exception{
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("com.example.transport.shedule/TimeTableEmptyPeople.xls").getFile());
+        ExcelReader excelReader = new ExcelReader(file);
+        assertThrows(ExcelException.class,()->excelReader.getJourney(),"");
+    }
+
+    @Test
+    void wrongSheetName() throws Exception{
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("com.example.transport.shedule/TimeTableWrongSheetName.xls").getFile());
         ExcelReader excelReader = new ExcelReader(file);
         assertThrows(ExcelException.class,()->excelReader.getJourney(),"");
     }
