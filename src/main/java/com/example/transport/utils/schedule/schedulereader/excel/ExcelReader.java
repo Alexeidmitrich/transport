@@ -1,4 +1,4 @@
-package com.example.transport.shedule;
+package com.example.transport.utils.schedule.schedulereader.excel;
 
 import com.example.transport.domain.*;
 import com.example.transport.exception.ExcelException;
@@ -9,11 +9,8 @@ import org.apache.poi.ss.util.CellReference;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -24,6 +21,8 @@ public class ExcelReader {
     private static final int FIRST_ROW_WITH_DATE = 2;
     private static final int STEP_JOURNEY_BLOCK = 4;
     private static final int FIRST_JOURNEY_SHEET = 4;
+
+
 
     public ExcelReader(String fileName) {
         try {
@@ -53,6 +52,9 @@ public class ExcelReader {
     }
 
     public Map<String, Person> getEmployee() throws Exception {
+        if(wb.getNumberOfSheets() < 3){
+            throw new ExcelException("Excel has no sheet with employee");
+        }
         Sheet sheet = wb.getSheetAt(2);
         List<Person> personList = PoiPOJOUtils.sheetToPOJO(sheet, Person.class);
         Map<String, Person> personMap = personList
@@ -73,18 +75,10 @@ public class ExcelReader {
         return stopTransporMap;
     }
 
-    private LocalDate getDate(String sheetName) throws Exception{
-        Pattern r = Pattern.compile("(.*\\s[0-9]+\\s[0-9]+-[0-9]+)\\s([0-9]+\\.[0-9]+\\.[0-9]+)");
-        Matcher m = r.matcher(sheetName);
-        DateTimeFormatter formatter = (DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        if (m.find()) {
-          LocalDate  date = LocalDate.parse(m.group(2), formatter);
-          return date;
-        }
-        throw  new ExcelException("The date is wrong");
-    }
+
 
     public List<List<Journey>> getJourney() throws Exception {
+
         // Map<LocalDate, List<Journey>> journeyMap = new HashMap<>();
         List<List<Journey>> journeyList = new LinkedList<>();
         for (int i = FIRST_JOURNEY_SHEET; i < wb.getNumberOfSheets() ; i++) {
@@ -94,17 +88,23 @@ public class ExcelReader {
     }
 
     private Journey getJourney(Sheet sheet, CellRangeAddress region, Cell cellWithJourneyInfo, CellRangeAddress metaInfoRegion) throws Exception {
+
+
         Map<String, StopTransport> stops = getStops();
         Map<String, Person> per = getEmployee();
         Map<String, Transport> transportMap = getTransport();
         Journey journey = new Journey();
-        LocalDate date = getDate(sheet.getSheetName());
+
+        DateUtil dateUtil = new DateUtil();
+        LocalDate date = dateUtil.getDateFromExcel(sheet.getSheetName());
         journey.setDate(date);
         String journeyInfo = cellWithJourneyInfo.
                 getStringCellValue();
+        Line line  = new Line();
+        String [] journeyInfoArray = journeyInfo.split("\\s+");
+        if(journeyInfoArray.length > 1){
+            journey.setNumber(journeyInfoArray[1]);
 
-        if(journeyInfo.split("\\s+").length > 1){
-            journey.setNumber(journeyInfo.split("\\s+")[1]);
         }
         int offset = FIRST_ROW_WITH_DATE;
         while (true) {
@@ -114,11 +114,17 @@ public class ExcelReader {
                 break;
             }
             Cell cellNumber = beginRow.getCell(metaInfoRegion.getFirstColumn() + 2);
-            if (cellNumber == null) {
+            //cellNumber.getCellType(CellType.STRING);
+            String value = String.valueOf((int)cellNumber.getNumericCellValue());
+            if (value == null) {
                 break;
             }
             JourneyStop journeyStop = new JourneyStop();
-            journey.setNumberForPassengers(String.valueOf(cellNumber.getNumericCellValue()));
+            journey.setNumberForPassengers(value);
+
+            if(line.getNumber() == null) {
+                line.setNumber(journey.getNumberForPassengers());
+            }
             double idTransport = getCellValueNumber(sheet, beginRow, region.getFirstColumn());
             String idTransportStr = String.valueOf((int) idTransport);
             Transport transport = transportMap.get(idTransportStr);
@@ -128,9 +134,15 @@ public class ExcelReader {
             journeyStop.setStop(stopTransport);
             String idDriverStr = getCellValueString(sheet, beginRow, region.getFirstColumn()+ 2);
             Person driver = per.get(idDriverStr);
+             if (driver.getTitle().equals("Контроллер")){
+               throw new ExcelException("Not found");
+             }
             journeyStop.setDriver(driver);
             String idInspectorStr = getCellValueString(sheet, beginRow,region.getFirstColumn() + 3 );
             Person inspector = per.get(idInspectorStr);
+            if (inspector.getTitle().equals("Водитель")){
+                throw new ExcelException("Not found");
+            }
             journeyStop.setInspector(inspector);
 
             Cell cellTime = beginRow.getCell(region.getFirstColumn() + 1);
@@ -141,10 +153,16 @@ public class ExcelReader {
             }
             journeyStop.setTime(cellTime.getLocalDateTimeCellValue().toLocalTime());
             journey.addJourneyStop(journeyStop);
+
+            line.addJourney(journey);
+            journey.setLine(line);
             journeyStop.setJourney(journey);
+
         }
         return journey;
     }
+
+
 
     public List<Journey> getJourney(int sheetNumber) throws Exception {
         Sheet sheet = wb.getSheetAt(sheetNumber);

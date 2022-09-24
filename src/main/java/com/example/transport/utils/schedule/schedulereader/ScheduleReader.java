@@ -1,4 +1,4 @@
-package com.example.transport.utils.schedulereader;
+package com.example.transport.utils.schedule.schedulereader;
 
 import com.example.transport.domain.Journey;
 import com.example.transport.domain.Person;

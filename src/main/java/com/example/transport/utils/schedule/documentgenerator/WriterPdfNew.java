@@ -1,4 +1,4 @@
-package com.example.transport.shedule;
+package com.example.transport.utils.schedule.documentgenerator;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;

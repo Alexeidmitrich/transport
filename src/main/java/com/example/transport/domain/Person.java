@@ -1,6 +1,6 @@
 package com.example.transport.domain;
 
-import com.example.transport.shedule.ExcelColumn;
+import com.example.transport.utils.schedule.schedulereader.excel.ExcelColumn;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {
+
    @Id
    @Column(nullable = false)
    @ExcelColumn(name = "Номер")
@@ -30,13 +31,13 @@ public class Person {
    protected String phone;
    @Column(nullable = false, length = 55)
    @ExcelColumn(name = "email")
-   private String email;
+   protected String email;
    @Column(nullable = false)
    @ExcelColumn(name = "Должность")
-   private String title;
+   protected String title;
    @Column(nullable = false)
    @ExcelColumn(name = "Допуск")
-   private String access;
+   protected String access;
 
 
    @Override

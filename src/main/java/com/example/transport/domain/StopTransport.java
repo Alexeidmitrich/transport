@@ -1,10 +1,9 @@
 package com.example.transport.domain;
 
-import com.example.transport.shedule.ExcelColumn;
+import com.example.transport.utils.schedule.schedulereader.excel.ExcelColumn;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 

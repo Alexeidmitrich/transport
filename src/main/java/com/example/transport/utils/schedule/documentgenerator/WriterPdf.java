@@ -1,4 +1,4 @@
-package com.example.transport.shedule;
+package com.example.transport.utils.schedule.documentgenerator;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

@@ -23,9 +23,11 @@ public class Line {
 
     @OneToMany(mappedBy = "line", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<Journey> journeys;
+    private List<Journey> journeys = new ArrayList<>();
 
-
+    public void addJourney(Journey stop){
+        journeys.add(stop);
+    }
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,

@@ -1,8 +1,9 @@
-package com.example.transport.shedule;
+package com.example.transport.utils.schedule.schedulereader.excel;
 
 import com.example.transport.domain.*;
 import com.example.transport.exception.ExcelException;
 import org.junit.jupiter.api.Test;
+
 
 import java.io.File;
 import java.time.LocalTime;
@@ -17,7 +18,7 @@ class ExcelReaderTest {
     @Test
     void getJourneyTest() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("com.example.transport.shedule/Timetable.xls").getFile());
+        File file = new File(classLoader.getResource("com/example/transport/utils/schedule/schedulereader/excel/Timetable.xls").getFile());
         ExcelReader excelReader = new ExcelReader(file);
         List<List<Journey>> journeyList = excelReader.getJourney();
         assertEquals(3, journeyList.size());
@@ -49,12 +50,14 @@ class ExcelReaderTest {
     @Test
     void emptyFileTest() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("com.example.transport.shedule/EmptyTimetable.xls").getFile());
+        File file = new File(classLoader.getResource("com/example/transport/utils/schedule/schedulereader/excel/EmptyTimetable.xls").getFile());
         ExcelReader excelReader = new ExcelReader(file);
         List<List<Journey>> journeys = excelReader.getJourney();
+
         assertEquals(0, journeys.size());
         assertThrows(ExcelException.class, ()->excelReader.getEmployee(), "Expected ExcelException. Excel is empty");
         assertThrows(ExcelException.class, ()->excelReader.getStops(), "Expected ExcelException. Excel is empty");
+        assertThrows(ExcelException.class,()->excelReader.getTransport(), "Expected ExcelException. Excel is empty");
     }
 
     private void testList( List<List<Journey>> journeyList,int index, int expectedSize) {
@@ -64,12 +67,11 @@ class ExcelReaderTest {
     @Test
     void transportTest() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("com.example.transport.shedule/Timetable.xls").getFile());
+        File file = new File(classLoader.getResource("com/example/transport/utils/schedule/schedulereader/excel/Timetable.xls").getFile());
         ExcelReader excelReader = new ExcelReader(file);
         Map<String, Transport> transportMap = excelReader.getTransport();
         String[] trollTransport = {"894","895","896","897","986","677","543","4322","4565","4433","4555","2134","2135","2156","4569"};
         for (int i = 0; i < trollTransport.length; i++) {
-            //System.out.println(entry.getKey() + " <> " + entry.getValue());
             assertTrue(transportMap.containsKey(trollTransport[i]));
         }
     }
@@ -77,26 +79,32 @@ class ExcelReaderTest {
     @Test
     void getJourneyWrong() throws Exception{
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("com.example.transport.shedule/TimetableMoreWrong.xls").getFile());
+        File file = new File(classLoader.getResource("com/example/transport/utils/schedule/schedulereader/excel/TimetableMoreWrong.xls").getFile());
         ExcelReader excelReader = new ExcelReader(file);
-        assertThrows(ExcelException.class,()->excelReader.getJourney(),"");
+        assertThrows(ExcelException.class,()->excelReader.getJourney(),"9");
     }
 
     @Test
     void emptyPeopleTest() throws Exception{
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("com.example.transport.shedule/TimeTableEmptyPeople.xls").getFile());
+        File file = new File(classLoader.getResource("com/example/transport/utils/schedule/schedulereader/excel/TimeTableEmptyPeople.xls").getFile());
         ExcelReader excelReader = new ExcelReader(file);
-        assertThrows(ExcelException.class,()->excelReader.getJourney(),"");
+        assertThrows(ExcelException.class,()->excelReader.getJourney(),"10");
     }
 
     @Test
     void wrongSheetName() throws Exception{
         ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource("com.example.transport.shedule/TimeTableWrongSheetName.xls").getFile());
+        File file = new File(classLoader.getResource("com/example/transport/utils/schedule/schedulereader/excel/TimeTableWrongSheetName.xls").getFile());
         ExcelReader excelReader = new ExcelReader(file);
-        assertThrows(ExcelException.class,()->excelReader.getJourney(),"");
+        assertThrows(ExcelException.class,()->excelReader.getJourney(),"11");
     }
 
-
+    @Test
+    void exchangeEmployee () throws Exception{
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("com/example/transport/utils/schedule/schedulereader/excel/TimeTableWrongPeople.xls").getFile());
+        ExcelReader excelReader = new ExcelReader(file);
+        assertThrows(ExcelException.class,()->excelReader.getJourney(),"12");
+    }
 }

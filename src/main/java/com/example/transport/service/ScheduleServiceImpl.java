@@ -2,7 +2,7 @@ package com.example.transport.service;
 
 import com.example.transport.domain.*;
 import com.example.transport.repository.*;
-import com.example.transport.shedule.ExcelReader;
+import com.example.transport.utils.schedule.schedulereader.excel.ExcelReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +30,8 @@ public class ScheduleServiceImpl {
     private StopTransportRepo stopTransportRepo;
     @Autowired
     private JourneyRepo journeyRepo;
-
+    @Autowired
+    private LineRepo lineRepo;
 
     public void saveDataFromFile(MultipartFile file){
         String tmpDir = System.getProperty("java.io.tmpdir");
@@ -46,6 +47,8 @@ public class ScheduleServiceImpl {
             transportRepo.saveAll(transport.values());
             Map<String, StopTransport> stops = excelReader.getStops();
             stopTransportRepo.saveAll(stops.values());
+         /// lineRepo.saveAll(excelReader.getLines());;
+
             for (int i = 0; i < journeyList.size(); i++) {
                 List<Journey> journeys  = journeyList.get(i);
                 journeyRepo.saveAll(journeys);
