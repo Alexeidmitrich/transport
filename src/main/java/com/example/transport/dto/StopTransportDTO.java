@@ -2,7 +2,11 @@ package com.example.transport.dto;
 
 
 import com.example.transport.domain.StopTransport;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class StopTransportDTO {
 
     private String id;
@@ -15,37 +19,5 @@ public class StopTransportDTO {
         this.name = stopTransport.getName();
         this.trolleybus = stopTransport.getTrolleybus();
         this.tram = stopTransport.getTram();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTrolleybus() {
-        return trolleybus;
-    }
-
-    public void setTrolleybus(String trolleybus) {
-        this.trolleybus = trolleybus;
-    }
-
-    public String getTram() {
-        return tram;
-    }
-
-    public void setTram(String tram) {
-        this.tram = tram;
     }
 }

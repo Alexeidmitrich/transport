@@ -3,6 +3,7 @@ package com.example.transport.controllers;
 import com.example.transport.domain.Schedule;
 import com.example.transport.service.ScheduleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,29 +26,31 @@ public class ScheduleController {
         scheduleService.saveDataFromFile(file);
         return ResponseEntity.ok("Success");
     }
+
     @GetMapping("/schedules")
     public List<Schedule> getAllSchedule(){
      return    scheduleService.getAllSchedule();
     }
+
     @GetMapping("/schedules/{id}")
     public Schedule getScheduleById(@PathVariable int id){
         return scheduleService.getScheduleById(id);
     }
 
     @PostMapping("/schedules")
-    public String addNewSchedule(@RequestBody Schedule schedule){
+    public ResponseEntity<String> addNewSchedule(@RequestBody Schedule schedule){
         scheduleService.addNewSchedule(schedule);
-        return "Ok";
+        return new ResponseEntity<>("Schedule was added", HttpStatus.CREATED);
     }
 
     @PutMapping("/schedules/{id}")
-    public String updateSchedule(@PathVariable int id, @RequestBody Schedule schedule){
+    public ResponseEntity<String> updateSchedule(@PathVariable int id, @RequestBody Schedule schedule){
         scheduleService.updateSchedule(id, schedule);
-        return "Ok";
+        return new ResponseEntity<>("Schedule was updated", HttpStatus.OK);
     }
     @DeleteMapping("/schedules/{id}")
-    public String deleteSchedule(@PathVariable int id){
+    public ResponseEntity<String> deleteSchedule(@PathVariable int id){
         scheduleService.deleteSchedule(id);
-        return "Ok";
+        return new ResponseEntity<>("Schedule was deleted", HttpStatus.OK);
     }
 }

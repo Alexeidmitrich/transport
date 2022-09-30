@@ -95,7 +95,7 @@ public class ExcelReader {
         Map<String, Transport> transportMap = getTransport();
         Journey journey = new Journey();
 
-        DateUtil dateUtil = new DateUtil();
+        ExcelDate dateUtil = new ExcelDate();
         LocalDate date = dateUtil.getDateFromExcel(sheet.getSheetName());
         journey.setDate(date);
         String journeyInfo = cellWithJourneyInfo.

@@ -1,12 +1,9 @@
 package com.example.transport.utils.schedule.schedulereader.excel;
 
-import com.example.transport.exception.ExcelException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellUtil;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
+import java.lang.reflect.*;
 
 public class PoiPOJOUtils {
 
@@ -20,14 +17,12 @@ public class PoiPOJOUtils {
         // collecting the column headers as a Map of header names to column indexes
         Map<Integer, String> colHeaders = new HashMap<Integer, String>();
         Row row = sheet.getRow(headerRowNum);
-        if(row == null){
-            throw new ExcelException("Excel is empty");
-        }
         for (Cell cell : row) {
             int colIdx = cell.getColumnIndex();
             String value = formatter.formatCellValue(cell, evaluator);
             colHeaders.put(colIdx, value);
         }
+
         // collecting the content rows
         List<T> result = new ArrayList<T>();
         String cellValue = "";
@@ -62,17 +57,12 @@ public class PoiPOJOUtils {
                 }
 
                 // fill the bean
-                List<Field> ownFiled = Arrays.stream(beanClass.getDeclaredFields()).toList();
-                List<Field> superClassFields = Arrays.stream(beanClass.getSuperclass().getDeclaredFields()).toList();
-                List<Field> fields = new ArrayList<>();
-                fields.addAll(ownFiled);
-                fields.addAll(superClassFields);
-                for (Field f : fields) {
+                for (Field f : beanClass.getDeclaredFields()) {
                     if (!f.isAnnotationPresent(ExcelColumn.class)) {
                         continue;
                     }
                     ExcelColumn ec = f.getAnnotation(ExcelColumn.class);
-                    if (entry.getValue().equals(ec.name())) {
+                    if(entry.getValue().equals(ec.name())) {
                         f.setAccessible(true);
                         if (f.getType() == String.class) {
                             f.set(bean, cellValue);
@@ -91,6 +81,7 @@ public class PoiPOJOUtils {
             }
             result.add(bean);
         }
+
         return result;
 
     }
