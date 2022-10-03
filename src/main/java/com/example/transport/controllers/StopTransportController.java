@@ -16,11 +16,11 @@ public class StopTransportController {
 
     @GetMapping("/stoptransport")
     public ResponseEntity<List<StopTransport>> getAllStopTransport() {
-        return   new ResponseEntity<>( stopTransportService.getAllStopTransport(), HttpStatus.OK);
+        return new ResponseEntity<>( stopTransportService.getAllStopTransport(), HttpStatus.OK);
     }
     @GetMapping("/stoptransport/{id}")
-    public StopTransport getStopTransportById(@PathVariable String id){
-        return    stopTransportService.getStopTransportById(id);
+    public ResponseEntity<StopTransport> getStopTransportById(@PathVariable String id){
+        return new ResponseEntity<>(stopTransportService.getStopTransportById(id),HttpStatus.OK);
     }
 
     @PostMapping("/stoptransport")

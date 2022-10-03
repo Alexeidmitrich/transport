@@ -28,13 +28,13 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedules")
-    public List<Schedule> getAllSchedule(){
-     return    scheduleService.getAllSchedule();
+    public ResponseEntity<List<Schedule>> getAllSchedule(){
+     return  new ResponseEntity<>(scheduleService.getAllSchedule(),HttpStatus.OK);
     }
 
     @GetMapping("/schedules/{id}")
-    public Schedule getScheduleById(@PathVariable int id){
-        return scheduleService.getScheduleById(id);
+    public ResponseEntity<Schedule> getScheduleById(@PathVariable int id){
+        return new ResponseEntity<>(scheduleService.getScheduleById(id),HttpStatus.OK);
     }
 
     @PostMapping("/schedules")
@@ -50,7 +50,7 @@ public class ScheduleController {
     }
     @DeleteMapping("/schedules/{id}")
     public ResponseEntity<String> deleteSchedule(@PathVariable int id){
-        scheduleService.deleteSchedule(id);
+        //scheduleService.deleteSchedule(id);
         return new ResponseEntity<>("Schedule was deleted", HttpStatus.OK);
     }
 }

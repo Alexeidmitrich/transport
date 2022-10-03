@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 
 //@Repository
-public interface ScheduleRepo  {
-
+public interface ScheduleRepo {
+//extends JpaRepository<Schedule, Integer>
 }

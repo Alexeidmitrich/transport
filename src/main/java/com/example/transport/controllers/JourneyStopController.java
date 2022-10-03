@@ -15,13 +15,13 @@ public class JourneyStopController {
     JourneyStopServiceImpl journeyStopService;
 
     @GetMapping("/journeyStop")
-    public List<JourneyStop> getAllJourneyStop(){
-        return journeyStopService.getAllJourney();
+    public ResponseEntity<List<JourneyStop>> getAllJourneyStop(){
+        return new ResponseEntity<>(journeyStopService.getAllJourney(),HttpStatus.OK);
     }
 
     @GetMapping("JourneyStop/{id}")
-    public JourneyStop getJourneyStopById(@PathVariable int id){
-      return   journeyStopService.getJourneyById(id);
+    public ResponseEntity<JourneyStop> getJourneyStopById(@PathVariable int id){
+      return new ResponseEntity<>(journeyStopService.getJourneyById(id), HttpStatus.OK);
     }
 
     @PostMapping("/journeyStop")

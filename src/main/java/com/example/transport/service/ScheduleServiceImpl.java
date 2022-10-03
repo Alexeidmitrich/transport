@@ -1,6 +1,7 @@
 package com.example.transport.service;
 
 import com.example.transport.domain.*;
+import com.example.transport.exception.TransportException;
 import com.example.transport.repository.*;
 import com.example.transport.utils.schedule.schedulereader.excel.ExcelReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ import java.util.*;
 
 @Service
 public class ScheduleServiceImpl {
-   // @Autowired
-   // private ScheduleRepo scheduleRepo;
+    //@Autowired
+    //private ScheduleRepo scheduleRepo;
     @Autowired
     private JourneyStopRepo journeyStopRepo;
     @Autowired
@@ -85,9 +86,12 @@ public class ScheduleServiceImpl {
 
        */
     }
-    public void deleteSchedule(int id){
-       // scheduleRepo.deleteById(id);
-    }
+    /*public void deleteSchedule(int id){
+       if(!scheduleRepo.existsById(id)){
+           throw new TransportException("Schedule with id " + id + " not found");
+       }
+        scheduleRepo.deleteById(id);
+    }*/
 
 
     public void uploadService() {
