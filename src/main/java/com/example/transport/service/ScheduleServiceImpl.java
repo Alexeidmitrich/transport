@@ -1,8 +1,8 @@
 package com.example.transport.service;
 
 import com.example.transport.domain.*;
-import com.example.transport.exception.TransportException;
 import com.example.transport.repository.*;
+import com.example.transport.utils.schedule.documentgenerator.WriterPdf;
 import com.example.transport.utils.schedule.schedulereader.excel.ExcelReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -97,6 +97,14 @@ public class ScheduleServiceImpl {
     public void uploadService() {
 
 
+    }
+
+    //public Path getPdfSchedule(String personId, Integer month)
+    public Path getPdfSchedule(String personId){
+        Person person = personRepository.getReferenceById(personId);
+        WriterPdf pdf = new WriterPdf("C:\\Users\\alexe\\Downloads\\Doc1.pdf");
+        Path  path = pdf.getPdfInCyrillic(person.getFio());
+        return  path;
     }
 }
 

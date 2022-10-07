@@ -8,13 +8,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.http.HttpResponse;
+
 @ControllerAdvice
 public class Handler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(StopTransportNotFound.class)
-    public final ResponseEntity<Exception> h(StopTransportNotFound ex) {
+    protected ResponseEntity<Object> handleConflict(
+            RuntimeException ex, HttpServletResponse response) {
         Exception myException = new Exception(ex);
-        //System.out.println("YEAH");
-        return new ResponseEntity<Exception>(myException, HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(myException, HttpStatus.BAD_REQUEST);
     }
 }

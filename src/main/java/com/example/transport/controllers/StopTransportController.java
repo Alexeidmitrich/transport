@@ -36,9 +36,9 @@ public class StopTransportController {
     }
 
     @DeleteMapping("/stoptransport/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deleteStopTransport(@PathVariable String id){
         stopTransportService.deleteStopTransport(id);
         return new ResponseEntity<>("Stop was deleted", HttpStatus.OK);
     }
+
 }
