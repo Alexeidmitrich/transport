@@ -11,15 +11,11 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class WriterPdf {
-    protected static String person;
+
     private String fileName;
 
     public WriterPdf(String fileName) {
         this.fileName = fileName;
-    }
-
-    public WriterPdf() {
-
     }
 
     public Path getPdfInCyrillic(String person) {
@@ -47,7 +43,7 @@ public class WriterPdf {
 
     public static void main(String[] args){
         WriterPdf pdf = new WriterPdf("C:\\Users\\alexe\\Downloads\\Doc1.pdf");
-        pdf.getPdfInCyrillic(person);
+        pdf.getPdfInCyrillic("Иван Петтров");
         System.out.println();
     }
 
