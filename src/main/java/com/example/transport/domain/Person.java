@@ -39,7 +39,6 @@ public class Person {
    @ExcelColumn(name = "Допуск")
    protected String access;
 
-
    @Override
    public String toString() {
       return "Person{" +

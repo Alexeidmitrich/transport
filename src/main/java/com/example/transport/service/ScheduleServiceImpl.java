@@ -10,10 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.URI;
+import java.nio.file.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -99,12 +99,15 @@ public class ScheduleServiceImpl {
 
     }
 
-    //public Path getPdfSchedule(String personId, Integer month)
+    //public Path getPdfSchedule(String personId, Integer month){
     public Path getPdfSchedule(String personId){
-        Person person = personRepository.getReferenceById(personId);
+        //Person person = personRepository.getReferenceById(personId);
+
+        List<LocalDate> testList = journeyStopRepo.findAllWorkDayById(personId);
         WriterPdf pdf = new WriterPdf("C:\\Users\\alexe\\Downloads\\Doc1.pdf");
-        Path  path = pdf.getPdfInCyrillic(person.getFio());
+        Path  path = pdf.getPdfInCyrillic(testList);
         return  path;
     }
+
 }
 

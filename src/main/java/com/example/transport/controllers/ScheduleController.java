@@ -31,7 +31,7 @@ public class ScheduleController {
 
     //@GetMapping(value = "schedules/{personId}/{month}", produces= MediaType.APPLICATION_PDF_VALUE)
     @GetMapping(value = "schedules/{personId}", produces= MediaType.APPLICATION_PDF_VALUE)
-    //public @ResponseBody byte[]  getPdf(@PathVariable String personId, @PathVariable Integer month)
+    //public @ResponseBody byte[]  getPdf(@PathVariable String personId, @PathVariable Integer month){
     public @ResponseBody byte[]  getPdf(@PathVariable String personId){
         //Path path = scheduleService.getPdfSchedule(personId, month);
         Path path = scheduleService.getPdfSchedule(personId);

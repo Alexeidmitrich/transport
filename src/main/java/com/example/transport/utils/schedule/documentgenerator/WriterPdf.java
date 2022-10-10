@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
+import com.example.transport.domain.Journey;
+import com.example.transport.domain.JourneyStop;
 import com.example.transport.domain.Person;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
@@ -18,7 +21,7 @@ public class WriterPdf {
         this.fileName = fileName;
     }
 
-    public Path getPdfInCyrillic(String person) {
+    public Path getPdfInCyrillic() {
         Path path = null;
         File file = new File(fileName);
         Font normalFont = FontFactory.getFont("/fonts/times-roman.ttf", "cp1251", BaseFont.EMBEDDED, 22);
@@ -27,7 +30,7 @@ public class WriterPdf {
             PdfWriter.getInstance(document, fs);
             document.open();
             Paragraph paragraph = new Paragraph();
-            paragraph.add(new Paragraph(person, normalFont));
+            paragraph.add(new Paragraph(, normalFont));
             //paragraph.add(new Paragraph("gggg", normalFont));
             document.add(paragraph);
             document.close();
@@ -42,9 +45,9 @@ public class WriterPdf {
     }
 
     public static void main(String[] args){
+        //Person person = new Person();
         WriterPdf pdf = new WriterPdf("C:\\Users\\alexe\\Downloads\\Doc1.pdf");
-        pdf.getPdfInCyrillic("Иван Петтров");
-        System.out.println();
+        //pdf.getPdfInCyrillic(person);
+        //System.out.println();
     }
-
 }

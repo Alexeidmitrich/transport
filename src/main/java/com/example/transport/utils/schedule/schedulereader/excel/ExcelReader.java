@@ -53,7 +53,7 @@ public class ExcelReader {
 
     public Map<String, Person> getEmployee() throws Exception {
         if(wb.getNumberOfSheets() < 3){
-            throw new ExcelException("Excel has no sheet with employee");
+            throw new Exception("Excel has no sheet with employee");
         }
         Sheet sheet = wb.getSheetAt(2);
         List<Person> personList = PoiPOJOUtils.sheetToPOJO(sheet, Person.class);
@@ -88,8 +88,6 @@ public class ExcelReader {
     }
 
     private Journey getJourney(Sheet sheet, CellRangeAddress region, Cell cellWithJourneyInfo, CellRangeAddress metaInfoRegion) throws Exception {
-
-
         Map<String, StopTransport> stops = getStops();
         Map<String, Person> per = getEmployee();
         Map<String, Transport> transportMap = getTransport();
