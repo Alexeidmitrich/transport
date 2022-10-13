@@ -21,7 +21,7 @@ public class WriterPdf {
         this.fileName = fileName;
     }
 
-    public Path getPdfInCyrillic() {
+    public Path getPdfInCyrillic(Person person, List<Journey> journeys) {
         Path path = null;
         File file = new File(fileName);
         Font normalFont = FontFactory.getFont("/fonts/times-roman.ttf", "cp1251", BaseFont.EMBEDDED, 22);
@@ -30,7 +30,7 @@ public class WriterPdf {
             PdfWriter.getInstance(document, fs);
             document.open();
             Paragraph paragraph = new Paragraph();
-            paragraph.add(new Paragraph(, normalFont));
+            paragraph.add(new Paragraph(person.getFio(), normalFont));
             //paragraph.add(new Paragraph("gggg", normalFont));
             document.add(paragraph);
             document.close();

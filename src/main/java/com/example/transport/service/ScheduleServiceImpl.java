@@ -101,13 +101,11 @@ public class ScheduleServiceImpl {
 
     //public Path getPdfSchedule(String personId, Integer month){
     public Path getPdfSchedule(String personId){
-        //Person person = personRepository.getReferenceById(personId);
-
-        List<LocalDate> testList = journeyStopRepo.findAllWorkDayById(personId);
+        Person person = personRepository.getReferenceById(personId);
+        List<Journey> testList = journeyStopRepo.findAllWorkDayById(personId);
         WriterPdf pdf = new WriterPdf("C:\\Users\\alexe\\Downloads\\Doc1.pdf");
-        Path  path = pdf.getPdfInCyrillic(testList);
+        Path  path = pdf.getPdfInCyrillic(person, testList);
         return  path;
     }
-
 }
 
