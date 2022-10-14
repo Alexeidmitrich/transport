@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface JourneyStopRepo extends JpaRepository<JourneyStop, Integer> {
 
-    @Query("SELECT js.journey.date FROM JourneyStop js WHERE js.driver.id = :id OR js.inspector.id = :id")
-    List<LocalDate> findAllWorkDayById(@Param("id") String id);
+    @Query("SELECT js.journey FROM JourneyStop js WHERE js.driver.id = :id OR js.inspector.id = :id")
+    List<Journey> findAllWorkDayById(@Param("id") String id);
 }
