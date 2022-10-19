@@ -1,54 +1,45 @@
 package com.example.transport.domain;
 
+import com.example.transport.utils.schedule.schedulereader.excel.ExcelColumn;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "stoptransport")
+@Setter
+@Getter
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class StopTransport {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "numberStop")
-    protected int numberStop;
-    protected String name;
-    protected LocalTime timeStop;
+    @ExcelColumn(name="Номер")
+    private String id;
+    @ExcelColumn(name = "Название")
+    @Column(name = "name", nullable = false)
+    private String name;
+    @ExcelColumn(name = "Троллейбус")
+    @Column(name = "trolleybus", nullable = false)
+    private String trolleybus;
+    @ExcelColumn(name = "Трамвай")
+    @Column(name = "tram", nullable = false)
+    private String tram;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "tutorial_tags",
+            joinColumns = { @JoinColumn(name = "tutorial_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id") })
+    private Set<Line> lines = new HashSet<>();
 
-    public StopTransport(int numberStop, String name, LocalTime timeStop) {
-        this.numberStop = numberStop;
-        this.name = name;
-        this.timeStop = timeStop;
-    }
-
-    public StopTransport() {
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "id_line")
-    private Lines lines;
-
-    public int getNumberStop() {
-        return numberStop;
-    }
-
-    public void setNumberStop(int numberStop) {
-        this.numberStop = numberStop;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalTime getTimeStop() {
-        return timeStop;
-    }
-
-    public void setTimeStop(LocalTime timeStop) {
-        this.timeStop = timeStop;
+    public void addLine(Line line) {
+        lines.add(line);
     }
 }
