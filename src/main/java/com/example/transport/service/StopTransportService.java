@@ -19,15 +19,15 @@ public class StopTransportService {
     public void addNewStopTransport(StopTransport stopTransport){
         stopTransportRepo.save(stopTransport);
     }
-    public void updateStopTransport(int id,StopTransport stopTransport) {
+    public void updateStopTransport(String id,StopTransport stopTransport) {
         StopTransport oldStopTransport = stopTransportRepo.getReferenceById(id);
-        oldStopTransport.setNumberStop(stopTransport.getNumberStop());
+        //oldStopTransport.setNumberStop(stopTransport.getNumberStop());
         stopTransportRepo.save(oldStopTransport);
     }
-    public void deleteStopTransport(int id){
+    public void deleteStopTransport(String id){
         stopTransportRepo.deleteById(id);
     }
-    public StopTransport getStopTransportById(int id){
+    public StopTransport getStopTransportById(String id){
       return   stopTransportRepo.findById(id).orElseThrow(()-> new TransportException("StopTransport with numberStop " + id + " was not found"));
     }
 }
