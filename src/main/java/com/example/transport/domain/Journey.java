@@ -36,4 +36,5 @@ public class Journey {
     public void addJourneyStop(JourneyStop stop){
         journeyStops.add(stop);
     }
+
 }

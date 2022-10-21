@@ -36,4 +36,5 @@ public class JourneyStop {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "journey_id")
     private Journey journey;
+
 }

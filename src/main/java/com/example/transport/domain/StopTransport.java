@@ -42,4 +42,11 @@ public class StopTransport {
     public void addLine(Line line) {
         lines.add(line);
     }
+
+    @Override
+    public String toString() {
+        return "" +
+                "" + name  +
+                ' ';
+    }
 }

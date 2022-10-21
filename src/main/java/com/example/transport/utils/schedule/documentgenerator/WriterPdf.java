@@ -3,19 +3,30 @@ package com.example.transport.utils.schedule.documentgenerator;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.example.transport.domain.Journey;
 import com.example.transport.domain.JourneyStop;
 import com.example.transport.domain.Person;
 import com.example.transport.domain.StopTransport;
+import com.itextpdf.layout.element.Cell;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.layout.element.Table;
+
+
 
 public class WriterPdf {
 
@@ -33,6 +44,12 @@ public class WriterPdf {
             Document document = new Document();
             PdfWriter.getInstance(document, fs);
             document.open();
+            //float [] pointColumnWidths = {150F, 150F, 150F};
+            //Table table = new Table(pointColumnWidths);
+            PdfPTable table = new PdfPTable(2);
+            addTableHeader(table);
+            addRows(table);
+            //addCustomRows(table);
             Paragraph paragraph = new Paragraph();
             Set<LocalDate> localDates = new HashSet<>();
             for (int i = 0; i < journeys.size(); i++) {
@@ -41,23 +58,30 @@ public class WriterPdf {
             Set<String> journeySet = new HashSet<>();
             for (int i = 0; i < journeys.size(); i++) {
                 journeySet.add(journeys.get(i).getNumber());
+                //table.addCell(new Cell().add(journeys.get(i).getNumber()));
             }
-            Set<String> journeySet1 = new HashSet<>();
+            List<String> journeySet1 = new ArrayList<>();
             for (int i = 0; i < journeys.size(); i++) {
                 List<JourneyStop> journeyStops = journeys.get(i).getJourneyStops();
                 for (int j = 0; j < journeyStops.size(); j++) {
                     JourneyStop journeyStop = journeyStops.get(j);
                     StopTransport stop = journeyStop.getStop();
-
+                    LocalTime time = journeyStop.getTime();
+                    //journeySet1.add(String.valueOf(time));
+                    //journeySet1.add(String.valueOf(stop));
+                    table.addCell(String.valueOf(stop));
+                    table.addCell(String.valueOf(time));
                 }
             }
             paragraph.add(new Paragraph(person.getFio(), normalFont));
             paragraph.add(new Paragraph("Рабочие дни", normalFont));
             paragraph.add(new Paragraph(localDates.toString(), normalFont));
-            paragraph.add(new Paragraph("Рейсы", normalFont));
+            /*paragraph.add(new Paragraph("Рейсы", normalFont));
             paragraph.add(new Paragraph(journeySet.toString(), normalFont));
-            //paragraph.add(new Paragraph(journeySet1.toString(), normalFont));
+            paragraph.add(new Paragraph("Время", normalFont));
+            paragraph.add(new Paragraph(journeySet1.toString(), normalFont));*/
             document.add(paragraph);
+            document.add(table);
             document.close();
             path = file.toPath();
         }
@@ -68,6 +92,35 @@ public class WriterPdf {
         }
         return path;
     }
+
+    /*private void addCustomRows(PdfPTable table)
+            throws URISyntaxException, BadElementException, IOException {
+        /*PdfPCell horizontalAlignCell = new PdfPCell(new Phrase(""));
+        horizontalAlignCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(horizontalAlignCell);
+
+        PdfPCell verticalAlignCell = new PdfPCell(new Phrase(""));
+        verticalAlignCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
+        table.addCell(verticalAlignCell);
+    }*/
+
+    private void addRows(PdfPTable table) {
+        //table.addCell("row 1, col 2");
+        //table.addCell("row 1, col 2");
+    }
+
+    private void addTableHeader(PdfPTable table) {
+        Stream.of("Stop", "Time")
+                .forEach(columnTitle -> {
+                    PdfPCell header = new PdfPCell();
+                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    header.setBorderWidth(2);
+                    header.setPhrase(new Phrase(columnTitle));
+                    table.addCell(header);
+                });
+        
+    }
+
 
     public static void main(String[] args){
         //Person person = new Person();
