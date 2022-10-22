@@ -44,11 +44,9 @@ public class WriterPdf {
             Document document = new Document();
             PdfWriter.getInstance(document, fs);
             document.open();
-            //float [] pointColumnWidths = {150F, 150F, 150F};
-            //Table table = new Table(pointColumnWidths);
             PdfPTable table = new PdfPTable(2);
             addTableHeader(table);
-            addRows(table);
+            //addRows(table);
             //addCustomRows(table);
             Paragraph paragraph = new Paragraph();
             Set<LocalDate> localDates = new HashSet<>();
@@ -58,7 +56,6 @@ public class WriterPdf {
             Set<String> journeySet = new HashSet<>();
             for (int i = 0; i < journeys.size(); i++) {
                 journeySet.add(journeys.get(i).getNumber());
-                //table.addCell(new Cell().add(journeys.get(i).getNumber()));
             }
             List<String> journeySet1 = new ArrayList<>();
             for (int i = 0; i < journeys.size(); i++) {
@@ -69,16 +66,17 @@ public class WriterPdf {
                     LocalTime time = journeyStop.getTime();
                     //journeySet1.add(String.valueOf(time));
                     //journeySet1.add(String.valueOf(stop));
-                    table.addCell(String.valueOf(stop));
-                    table.addCell(String.valueOf(time));
+                    table.addCell(stop.toString());
+                    table.addCell(time.toString());
                 }
+
             }
             paragraph.add(new Paragraph(person.getFio(), normalFont));
             paragraph.add(new Paragraph("Рабочие дни", normalFont));
             paragraph.add(new Paragraph(localDates.toString(), normalFont));
-            /*paragraph.add(new Paragraph("Рейсы", normalFont));
+            paragraph.add(new Paragraph("Рейсы", normalFont));
             paragraph.add(new Paragraph(journeySet.toString(), normalFont));
-            paragraph.add(new Paragraph("Время", normalFont));
+            /*paragraph.add(new Paragraph("Время", normalFont));
             paragraph.add(new Paragraph(journeySet1.toString(), normalFont));*/
             document.add(paragraph);
             document.add(table);
@@ -102,18 +100,18 @@ public class WriterPdf {
         PdfPCell verticalAlignCell = new PdfPCell(new Phrase(""));
         verticalAlignCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
         table.addCell(verticalAlignCell);
-    }*/
+    }
 
     private void addRows(PdfPTable table) {
         //table.addCell("row 1, col 2");
         //table.addCell("row 1, col 2");
-    }
+    }*/
 
     private void addTableHeader(PdfPTable table) {
         Stream.of("Stop", "Time")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
-                    header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    header.setBackgroundColor(BaseColor.BLUE);
                     header.setBorderWidth(2);
                     header.setPhrase(new Phrase(columnTitle));
                     table.addCell(header);

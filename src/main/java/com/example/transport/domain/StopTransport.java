@@ -45,8 +45,8 @@ public class StopTransport {
 
     @Override
     public String toString() {
-        return "" +
-                "" + name  +
+        return "'" + id + '\'' +
+                ", '" + name + '\'' +
                 ' ';
     }
 }
