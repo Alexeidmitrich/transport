@@ -104,7 +104,7 @@ public class ScheduleServiceImpl {
         Person person = personRepository.getReferenceById(personId);
         List<Journey> testList = journeyStopRepo.findAllWorkDayById(personId);
         WriterPdf pdf = new WriterPdf("C:\\Users\\alexe\\Downloads\\Doc1.pdf");
-        Path  path = pdf.getPdfInCyrillic(person, testList);
+        Path  path = pdf.getScheduleForPerson(person, testList);
         return  path;
     }
 }
