@@ -69,7 +69,7 @@ public class WriterPdf {
                     table.addCell(stop.toString());
                     table.addCell(time.toString());
                 }
-
+               break;
             }
             paragraph.add(new Paragraph(person.getFio(), normalFont));
             paragraph.add(new Paragraph("Рабочие дни", normalFont));
