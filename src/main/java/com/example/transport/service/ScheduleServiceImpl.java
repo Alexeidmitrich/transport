@@ -18,7 +18,7 @@ import java.util.*;
 
 
 @Service
-public class ScheduleServiceImpl {
+public class ScheduleServiceImpl implements ScheduleService {
     //@Autowired
     //private ScheduleRepo scheduleRepo;
     @Autowired
@@ -34,6 +34,7 @@ public class ScheduleServiceImpl {
     @Autowired
     private LineRepo lineRepo;
 
+    @Override
     public void saveDataFromFile(MultipartFile file){
         String tmpDir = System.getProperty("java.io.tmpdir");
         System.out.println(tmpDir);
@@ -58,27 +59,22 @@ public class ScheduleServiceImpl {
             throw new RuntimeException(e);
         }
     }
-    private Path write(MultipartFile file, Path dir) {
-        Path filepath = Paths.get(dir.toString(), file.getOriginalFilename());
-        try (OutputStream os = Files.newOutputStream(filepath)) {
-            os.write(file.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return filepath;
-    }
 
+    @Override
     public List<Schedule> getAllSchedule(){
         return null; //scheduleRepo.findAll();
     }
+    @Override
     public void addNewSchedule(Schedule schedule){
        // scheduleRepo.save(schedule);
     }
 
+    @Override
     public Schedule getScheduleById(int id){
      return  null;//  scheduleRepo.findById(id).orElseThrow(()-> new TransportException("Schedule with id " + id + " was not found"));
     }
 
+    @Override
     public void updateSchedule(int id, Schedule schedule){
       /*  Schedule oldSchedule = scheduleRepo.getReferenceById(id);
         //oldSchedule.setId(schedule.getId());
@@ -94,12 +90,14 @@ public class ScheduleServiceImpl {
     }*/
 
 
+    @Override
     public void uploadService() {
 
 
     }
 
     //public Path getPdfSchedule(String personId, Integer month){
+    @Override
     public Path getPdfSchedule(String personId){
         Person person = personRepository.getReferenceById(personId);
         List<Journey> testList = journeyStopRepo.findAllWorkDayById(personId);

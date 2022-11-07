@@ -10,28 +10,33 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class JourneyStopServiceImpl {
+public class JourneyStopServiceImpl implements JourneyStopService {
     @Autowired
     private JourneyStopRepo journeyStopRepo;
 
+    @Override
     public List<JourneyStop> getAllJourney(){
         return journeyStopRepo.findAll();
     }
 
+    @Override
     public JourneyStop getJourneyById(int id){
         return journeyStopRepo.findById(id).orElseThrow(()-> new JourneyStopException("JourneyStop with id " + id + " was not found"));
     }
 
+    @Override
     public void addNewJourneyStop(JourneyStop journeyStop){
         journeyStopRepo.save(journeyStop);
     }
 
+    @Override
     public void updateJourneyStop(int id, JourneyStop journeyStop){
         JourneyStop oldJourneyStop = journeyStopRepo.getReferenceById(id);
         oldJourneyStop.setId(journeyStop.getId());
         journeyStopRepo.save(oldJourneyStop);
     }
 
+    @Override
     public void deleteJourneyStop(int id){
         if (!journeyStopRepo.existsById(id)){
             throw new JourneyStopException("JourneyStop with id " + id + " not found");

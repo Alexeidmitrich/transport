@@ -1,37 +1,17 @@
 package com.example.transport.service;
 
 import com.example.transport.domain.StopTransport;
-import com.example.transport.exception.TransportException;
-import com.example.transport.repository.StopTransportRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class StopTransportService {
-    @Autowired
-    private StopTransportRepo stopTransportRepo;
+public interface StopTransportService {
+    List<StopTransport> getAllStopTransport();
 
-    public List<StopTransport> getAllStopTransport(){
-        return stopTransportRepo.findAll();
-    }
+    void addNewStopTransport(StopTransport stopTransport);
 
-    public void addNewStopTransport(StopTransport stopTransport){
-        stopTransportRepo.save(stopTransport);
-    }
+    void updateStopTransport(String id, StopTransport stopTransport);
 
-    public void updateStopTransport(String id,StopTransport stopTransport) {
-        StopTransport oldStopTransport = stopTransportRepo.getReferenceById(id);
-        //oldStopTransport.setNumberStop(stopTransport.getNumberStop());
-        stopTransportRepo.save(oldStopTransport);
-    }
+    void deleteStopTransport(String id);
 
-    public void deleteStopTransport(String id){
-        stopTransportRepo.deleteById(id);
-    }
-
-    public StopTransport getStopTransportById(String id){
-      return   stopTransportRepo.findById(id).orElseThrow(()-> new TransportException("StopTransport with numberStop " + id + " was not found"));
-    }
+    StopTransport getStopTransportById(String id);
 }

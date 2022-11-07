@@ -1,5 +1,6 @@
 package com.example.transport.controllers;
 
+import com.example.transport.service.ScheduleService;
 import com.example.transport.service.ScheduleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,7 +18,7 @@ import java.util.List;
 @RestController
 public class ScheduleController {
     @Autowired
-    private ScheduleServiceImpl scheduleService;
+    private ScheduleService scheduleService;
 
     @PostMapping(value = "/upload",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},

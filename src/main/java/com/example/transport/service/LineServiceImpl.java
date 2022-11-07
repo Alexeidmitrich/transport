@@ -9,28 +9,33 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LineServiceImpl {
+public class LineServiceImpl implements LineService {
     @Autowired
     private LineRepo lineRepo;
 
+    @Override
     public List<Line> getAllLine(){
        return lineRepo.findAll();
     }
 
+    @Override
     public Line getLineById(String id){
        return lineRepo.findById(id).orElseThrow(()->new LinesException("Lines with id " + id + " was not found"));
     }
 
+    @Override
     public void addLine(Line lines) {
         lineRepo.save(lines);
     }
 
+    @Override
     public void updateLine(String id, Line lines){
         Line oldLines = lineRepo.getReferenceById(id);
         oldLines.setNumber(lines.getNumber());
         lineRepo.save(oldLines);
     }
 
+    @Override
     public void deleteLine(String id){
         if (!lineRepo.existsById(id)){
             throw new LinesException("Line with id " + id + " not found");

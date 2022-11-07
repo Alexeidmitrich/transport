@@ -1,6 +1,7 @@
 package com.example.transport.controllers;
 
 import com.example.transport.domain.StopTransport;
+import com.example.transport.service.StopTransportService;
 import com.example.transport.service.StopTransportServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import java.util.List;
 @RestController
 public class StopTransportController {
     @Autowired
-    private StopTransportServiceImpl stopTransportService;
+    private StopTransportService stopTransportService;
 
     @GetMapping("/stoptransport")
     public ResponseEntity<List<StopTransport>> getAllStopTransport() {
