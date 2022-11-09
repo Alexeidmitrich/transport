@@ -55,7 +55,7 @@ public class WriterPdf {
             for (int i = 0; i < journeys.size(); i++) {
                 PdfPTable table = new PdfPTable(2);
                 journeySet.add(journeys.get(i).getNumber());
-                PdfPCell cell = new PdfPCell(new Phrase(journeySet.toString()));
+                PdfPCell cell = new PdfPCell(new Phrase(journeys.get(i).getNumber()));
                 cell.setColspan(2);
                 table.addCell(cell);
                 addTableHeader(table);
@@ -64,9 +64,9 @@ public class WriterPdf {
                     JourneyStop journeyStop = journeyStops.get(j);
                     StopTransport stop = journeyStop.getStop();
                     LocalTime time = journeyStop.getTime();
-                    table.addCell(new Phrase(stop.getName(), normalFont));
-                    table.addCell(time.toString());
-                }
+                        table.addCell(new Phrase(stop.getName(), normalFont));
+                        table.addCell(time.toString());
+                    }
                 table.setSpacingBefore(30);
                 table.setSpacingAfter(30);
                 document.add(table);
