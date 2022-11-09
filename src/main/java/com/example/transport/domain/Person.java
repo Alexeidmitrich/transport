@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Person {

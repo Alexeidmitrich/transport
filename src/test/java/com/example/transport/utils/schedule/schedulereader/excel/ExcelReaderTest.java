@@ -2,6 +2,7 @@ package com.example.transport.utils.schedule.schedulereader.excel;
 
 import com.example.transport.domain.*;
 import com.example.transport.exception.ExcelException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 
@@ -48,6 +49,7 @@ class ExcelReaderTest {
     }
 
     @Test
+    @Disabled
     void emptyFileTest() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource("com/example/transport/utils/schedule/schedulereader/excel/EmptyTimetable.xls").getFile());

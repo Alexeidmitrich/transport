@@ -1,6 +1,7 @@
 package com.example.transport.controllers;
 
 import com.example.transport.domain.JourneyStop;
+import com.example.transport.service.JourneyStopService;
 import com.example.transport.service.JourneyStopServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import java.util.List;
 @RestController
 public class JourneyStopController {
     @Autowired
-    JourneyStopServiceImpl journeyStopService;
+    private JourneyStopService journeyStopService;
 
     @GetMapping("/journeyStop")
     public ResponseEntity<List<JourneyStop>> getAllJourneyStop(){

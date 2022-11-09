@@ -1,7 +1,7 @@
 package com.example.transport.controllers;
 
 import com.example.transport.domain.Transport;
-import com.example.transport.service.TransportServiceImpl;
+import com.example.transport.service.TransportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 public class TransportController {
     @Autowired
-    private TransportServiceImpl transportService;
+    private TransportService transportService;
 
     @GetMapping("/transport")
     public ResponseEntity<List<Transport>> getAllTransport(){

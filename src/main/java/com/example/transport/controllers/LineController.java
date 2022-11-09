@@ -2,6 +2,7 @@ package com.example.transport.controllers;
 
 import com.example.transport.domain.Line;
 
+import com.example.transport.service.LineService;
 import com.example.transport.service.LineServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.List;
 @RestController
 public class LineController {
     @Autowired
-    private LineServiceImpl lineService;
+    private LineService lineService;
 
 
     @GetMapping("/lines")

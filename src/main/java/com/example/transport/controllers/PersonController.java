@@ -1,6 +1,7 @@
 package com.example.transport.controllers;
 
 import com.example.transport.domain.Person;
+import com.example.transport.service.PersonService;
 import com.example.transport.service.PersonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ public class PersonController {
 
 
     @Autowired
-    private PersonServiceImpl personService;
+    private PersonService personService;
 
     @GetMapping("/persons")
     public ResponseEntity<List<Person>> getPersons() {
